@@ -7,7 +7,145 @@ from random import randint
 
 #wow Unbelieva-Boat is gross, there's some changes in here. Hopefully not omitting anything necessary
 class pythondiscord_bot_handler:
-     def find_index_in_db(self, data_to_search, user_to_find, fail_safe=False):
+    def __init__(self, client):
+        # we do the path from the main.py file, so we go into the db folder, then select
+        self.pathToJson = "database/database.json"
+        self.client = client
+        # for the json "variables", dont want to make a whole function to find index for variables
+        # wont be many anyways. so making it manually
+        self.variable_dict = {
+            "daily": 0,
+        }
+
+        # for colors
+        self.discord_error_rgb_code = discord.Color.from_rgb(239, 83, 80)
+        self.discord_blue_rgb_code = discord.Color.from_rgb(3, 169, 244)
+        self.discord_success_rgb_code = discord.Color.from_rgb(102, 187, 106)
+
+        # check if file is created, else create it
+        if not os.path.exists(self.pathToJson):
+            creating_file = open(self.pathToJson, "w")
+            # adding default json config into the file if creating new
+            # all the users will get created automatically in the function self.find_index_in_db()
+            # but for the different jobs etc the program needs configs for variables and symbols
+            creating_file.write("""{\n\t"userdata": [], 
+        										"symbols": [
+        											{"name":"currency_symbol","symbol_emoji":":dollar:"}				
+        										],
+        										"items": [
+        											{}				
+        										],
+        										"income_roles": [
+        											{}				
+        										]
+        										\n}""")
+            creating_file.close()
+
+        #
+
+        # check if json file is corrupted
+        #  -> in self.check_json()
+        # called from main.py
+
+    def get_currency_symbol(self, test=False, value="unset"):
+        if not test:
+            # get currency symbol to use
+            temp_json_opening = open(self.pathToJson, "r")
+            temp_json_content = json.load(temp_json_opening)
+            # the currency symbol is always at position 0 in the "symbols" part
+            currency_symbol = temp_json_content["symbols"][0]["symbol_emoji"]
+            self.currency_symbol = discord.utils.get(self.client.emojis, id=int(currency_symbol))
+        else:
+            try:
+                self.currency_symbol = discord.utils.get(self.client.emojis, id=int(value))
+                print(str(self.currency_symbol))
+                if self.currency_symbol == None:
+                    return "error"
+            except:
+                return "error"
+
+        # if we handle a already created file, we need certain variables
+
+    async def check_json(self):
+
+        temp_json_opening = open(self.pathToJson, "r")
+        temp_json_content = json.load(temp_json_opening)
+        """
+        possibly to add : 
+            improve the error system, raising specific errors with a "error_info"
+            for example : "userdata missing"
+        """
+        try:
+            check_content = temp_json_content
+            # userdata space
+            userdata = check_content["userdata"]
+            # variables
+            variables = check_content["variables"]
+            daily = variables[self.variable_dict["daily"]]
+
+            # symbol
+            currency_symbol = check_content["symbols"][0]
+            items = check_content["items"]
+            roles = check_content["income_roles"]
+
+            # didnt fail, so we're good
+            temp_json_opening.close()
+        except Exception as e:
+            # something is missing, inform client
+            return "error"
+
+    """
+    GLOBAL FUNCTIONS
+    """
+
+    # need to overwrite the whole json when updating, luckily the database won't be enormous
+    def overwrite_json(self, content):
+        self.json_db = open(self.pathToJson, "w")
+        self.clean_json = json.dumps(content, indent=4, separators=(",", ": "))
+        self.json_db.write(self.clean_json)
+        self.json_db.close()
+
+    # find the user in the database
+    def find_index_in_db(self, data_to_search, user_to_find, fail_safe=False):
+        print(data_to_search)
+        user_to_find = int(user_to_find)
+        for i in range(len(data_to_search)):
+            if data_to_search[i]["user_id"] == user_to_find:
+                print("\nfound user\n")
+                return int(i), "none"
+
+        # in this case, this isnt a user which isnt yet registrated
+        # but someone who doesnt exist on the server
+        # or at least thats what is expected when calling with this parameter
+        if fail_safe:
+            return 0, "error"
+
+        print("\ncreating user\n")
+        # we did NOT find him, which means he doesn't exist yet
+        # so we automatically create him
+        data_to_search.append({
+            "user_id": int(user_to_find),
+            "cash": 0,
+            "bank": 0,
+            # "balance" : cash + bank
+            # "roles": "None" ; will be checked when calculating weekly auto-role-income
+            "items": "none",
+            "last_daily": "none",
+            "rate": 50,
+            "daily_mult": 1.0
+        })
+        """
+            POSSIBLE ISSUE :
+                that we need to create user by overwrite, then problem of doing that while another command is
+                supposed to have it open etc. hopefully it works just as such
+        """
+        # now that the user is created, re-check and return int
+
+        for i in range(len(data_to_search)):
+            if data_to_search[i]["user_id"] == user_to_find:
+                return i, data_to_search
+
+    def find_index_in_db(self, data_to_search, user_to_find, fail_safe=False):
         print(data_to_search)
         user_to_find = int(user_to_find)
         for i in range(len(data_to_search)):
