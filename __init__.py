@@ -70,6 +70,7 @@ class pythondiscord_bot_handler:
 
         temp_json_opening = open(self.pathToJson, "r")
         temp_json_content = json.load(temp_json_opening)
+        
         """
         possibly to add : 
             improve the error system, raising specific errors with a "error_info"

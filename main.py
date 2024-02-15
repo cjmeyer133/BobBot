@@ -1,5 +1,8 @@
 #this should be the code for the bot, but honestly IDK what I'm doing so don't mind how Frankenstein it is
 
+#use command pip install 
+#for discord, asyncpg, keep?
+
 #from Unbelieva-Boat by github user h-ntai 
 import json, os, time, random, math, sys, discord, math
 from datetime import datetime, timezone, timedelta
