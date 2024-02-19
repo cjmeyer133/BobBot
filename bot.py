@@ -2,12 +2,13 @@
 import os
 
 import discord
+import asyncio
 from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
