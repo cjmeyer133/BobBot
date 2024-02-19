@@ -111,3 +111,7 @@ dictionary validStatesRegionsAndRoles = {
 ‘WI’ : “1202728976733184030”, 
 ‘WV’ : “1202728921825677383”, 
 ‘WY’ : “1202729013252984892”}
+
+async def suggest-channel (city, stateOrRegionAbbr){
+  
+}
