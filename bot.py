@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+
+
+client = discord.Client("MESSAGE_CONTENT")
 
 @client.event
 async def on_ready():
