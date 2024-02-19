@@ -8,8 +8,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 
-
-client = discord.Client("MESSAGE_CONTENT")
+client = discord.Client()
 
 @client.event
 async def on_ready():
