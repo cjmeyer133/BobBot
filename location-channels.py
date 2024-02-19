@@ -114,4 +114,5 @@ dictionary validStatesRegionsAndRoles = {
 
 class location_names:
   async def suggest_channel (city, stateOrRegionAbbr):
-    return
+        print(f'Processing channel request for {city}, {stateOrRegionAbbr}...')
+        return
