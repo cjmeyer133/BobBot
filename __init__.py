@@ -175,7 +175,15 @@ class pythondiscord_bot_handler:
             if data_to_search[i]["user_id"] == user_to_find:
                 return i, data_to_search
 
-
+    #on reacting to a specific message with an emoji, a role can be added to the reactor.
+    async def on_reaction_add(reaction, user):
+        Channel = client.get_channel(YOUR_CHANNEL_ID)  #YOUR_CHANNEL_ID seems to be a placeholder, so we may need to change that to something specific.
+        if reaction.message.channel.id != Channel.id:
+            return
+        #It seems like it will be necessary to manage each reaction emote individually
+        if reaction.emoji == "":  # an emoji must be put here
+          Role = discord.utils.get(user.server.roles, name="YOUR_ROLE_NAME_HERE")
+          await user.add_roles(Role)
 
     #
     # ADD-MONEY
