@@ -181,9 +181,9 @@ class pythondiscord_bot_handler:
         if reaction.message.channel.id != Channel.id:
             return
         #It seems like it will be necessary to manage each reaction emote individually
-        if reaction.emoji == "":  # an emoji must be put here
+        if str(reaction.emoji) == "<:regional_indicator_a:>":
           Role = discord.utils.get(user.server.roles, name="YOUR_ROLE_NAME_HERE")
-          await user.add_roles(Role)
+          await user.add_roles(Role)  #not sure if role is a placeholder or not.  May need to create different definitions for each reaction message or come up with new regional indicators.  Hopefully not.
 
     #
     # ADD-MONEY
