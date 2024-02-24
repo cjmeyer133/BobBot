@@ -112,6 +112,7 @@ dictionary validStatesRegionsAndRoles = {
 ‘WV’ : “1202728921825677383”, 
 ‘WY’ : “1202729013252984892”}
 
-async def suggest-channel (city, stateOrRegionAbbr){
-  
-}
+class location_names:
+  async def suggest_channel (city, stateOrRegionAbbr):
+        print(f'Processing channel request for {city}, {stateOrRegionAbbr}...')
+        return
