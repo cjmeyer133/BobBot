@@ -179,6 +179,7 @@ class MyClient(discord.Client):
 
 
 client = MyClient(intents=intents)
+dClient = discord.Client(intents=discord.Intents.default())
 
 the_tree = client.tree
 
@@ -238,7 +239,7 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
     # Check if the stateOrRegionAbbr is valid
     
     if state_or_region not in validStatesRegionsAndRoles:
-        await interaction.response.send_message(f"Sorry, no state or region exists with the abbreviation {state_or_region}.")
+        await interaction.response.send_message(f"Sorry, no state or region exists with the abbreviation \"{state_or_region}\". Try an abbreviation like \"MA\" or \"DC\".")
         return
 
     # Check if the city/state combo already exists
@@ -253,16 +254,18 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
     #     return
 
     #Make a post in the #city-proposal channel
-    channel = bot.get_channel(1202356899773685770)
-        
+    channel = client.get_channel(1202356899773685770)
+    print(f"{client.user}")
+    print(f"{channel}")    
     if channel:
-        message = f"Are you looking for {city} in {state_or_region}? React with a ⏫ to this post to indicate your interest in a {city} channel! When this gets to 5 votes, the channel will be created."
+        message = f"Are you looking for Adderall in {city}, {state_or_region}? React with a ⏫ to this post to indicate your interest in a {city} channel! When this gets to 5 votes, the channel will be created."
         await channel.send(message)
 
         # Add the post ID to the suggestionPosts part of the database
         #database.add_suggestion(city, stateOrRegionAbbr, suggestion_post.id)
         await interaction.response.send_message("Your suggestion has been noted.")
     else:
+
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
 
