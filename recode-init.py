@@ -1,10 +1,8 @@
 #trying to get working commands/bot
 
-
 ###########
 # IMPORTS #
 ###########
-
 import os
 
 import discord
@@ -31,6 +29,7 @@ from keep import alive
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD=os.getenv('GUILD_ID')
 
 ########################
 # INTENTS/CLIENT SETUP #
@@ -41,10 +40,28 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+##########################
+# ASYNCHRONOUS FUNCTIONS #
+###########################
+
 @client.event
 async def on_ready():
     #prints this when bot has connected to discord
     print(f'{client.user} has connected to Discord!')
+
+
+#######################
+# ON DEMAND FUNCTIONS #
+#######################
+
+
+
+
+
+
+
+
+
 
 
 #############
