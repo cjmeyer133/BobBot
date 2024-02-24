@@ -29,7 +29,7 @@ from keep import alive
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD=os.getenv('GUILD_ID')
+
 
 ########################
 # INTENTS/CLIENT SETUP #
@@ -38,11 +38,26 @@ GUILD=os.getenv('GUILD_ID')
 intents = discord.Intents.all()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+class MyClient(discord.Client):
+    def __init__(self, *, intents: discord.Intents):
+        super().__init__(intents=intents)
+        # A CommandTree is a special type that holds all the application command
+        # state required to make it work. This is a separate class because it
+        # allows all the extra state to be opt-in.
+        # Whenever you want to work with application commands, your tree is used
+        # to store and work with them.
+        # Note: When using commands.Bot instead of discord.Client, the bot will
+        # maintain its own tree instead.
+        self.tree = discord.app_commands.CommandTree(self)
+
+
+client = MyClient(intents=intents)
 
 ##########################
 # ASYNCHRONOUS FUNCTIONS #
 ###########################
+
+
 
 @client.event
 async def on_ready():
