@@ -93,6 +93,15 @@ async def on_ready():
 async def first_command(interaction):
     await interaction.response.send_message("Hello!")
 
+@the_tree.command(
+    name="testing",
+    description="A test command",
+    guild=discord.Object(id=1200191417457324069)
+)
+async def create_item(self, itemname: str, cost: int):
+    costs=str(cost)
+    await self.response.send_message(str(itemname+" costs $"+costs))
+    
 
 
 #############
