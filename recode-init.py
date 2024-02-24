@@ -151,6 +151,10 @@ validStatesRegionsAndRoles = {
 "WV" : "1202728921825677383", 
 "WY" : "1202729013252984892"}
 
+#CREATE ME
+#suggestionPosts = A table, loaded from database.json, with the following fields: postID (string, id, unique, not null), city (string, not null), stateOrRegion (string, key of [validStatesRegionsAndRoles], not null). Contains one entry for every city/state combo that has been suggested, but not approved.
+#existingChannels = A table, loaded from database.json, with the following fields: channelID (string, id, unique, not null), city (string, not null), stateOrRegion (string, key of [validStatesRegionsAndRoles], not null). Contains one entry for every city/state combo that has been approved.
+
 ########################
 # INTENTS/CLIENT SETUP #
 ########################
@@ -198,7 +202,6 @@ async def on_ready():
 # ON DEMAND FUNCTIONS #
 #######################
 
-
 # Add the guild ids in which the slash command will appear.
 # If it should be in all, remove the argument, but note that
 # it will take some time (up to an hour) to register the
@@ -213,13 +216,55 @@ async def first_command(interaction):
 
 @the_tree.command(
     name="testing",
-    description="A test command",
+    description="A test command with variables",
     guild=discord.Object(id=1200191417457324069)
 )
-async def create_item(self, itemname: str, cost: int):
+async def create_item(interaction, itemname: str, cost: int):
     costs=str(cost)
-    await self.response.send_message(str(itemname+" costs $"+costs))
+    #in theory, it should be written to the database here
+    await interaction.response.send_message(str(itemname+" costs $"+costs))
+
+#Bot command: /suggest-channel param:city param:stateOrRegionAbbr ->
+#If the state stateOrRegionAbbr is not one of the approved abbreviations, tell the user "Sorry, no state or region exists with the abbreviation [stateOrRegion]".
+#If this city/state combo already exists, stop the user from suggesting it
+#If this city/state combo was already suggested in suggestionPosts, stop the user from suggesting it and give them the link to the bot’s post
+#Otherwise, make a post in the #city-proposal channel, e.g. "Are you looking for Adderall in [city], [stateOrRegion]? React with a ⏫to this post to indicate your interest in a [city] channel! When this gets to 5 votes, the channel will be created." Then, add the ID of this post to the suggestionPosts part of the database.
+@the_tree.command(
+    name='suggest-channel',
+    description="Propose a new channel for your city!", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def suggest_channel(interaction, city :str, state_or_region :str):
+    # Check if the stateOrRegionAbbr is valid
     
+    if state_or_region not in validStatesRegionsAndRoles:
+        await interaction.response.send_message(f"Sorry, no state or region exists with the abbreviation {state_or_region}.")
+        return
+
+    # Check if the city/state combo already exists
+    # if database.check_existing_channel(city, stateOrRegionAbbr):
+    #     await ctx.send("This city/state combo already has a channel.")
+    #     return
+
+    # Check if the city/state combo was already suggested
+    # if database.check_existing_suggestion(city, stateOrRegionAbbr):
+    #     suggestion_post_link = database.get_suggestion_post_link(city, stateOrRegionAbbr)
+    #     await ctx.send(f"This city/state combo was already suggested. Here's the link: {suggestion_post_link}")
+    #     return
+
+    #Make a post in the #city-proposal channel
+    channel = bot.get_channel(1202356899773685770)
+        
+    if channel:
+        message = f"Are you looking for {city} in {state_or_region}? React with a ⏫ to this post to indicate your interest in a {city} channel! When this gets to 5 votes, the channel will be created."
+        await channel.send(message)
+
+        # Add the post ID to the suggestionPosts part of the database
+        #database.add_suggestion(city, stateOrRegionAbbr, suggestion_post.id)
+        await interaction.response.send_message("Your suggestion has been noted.")
+    else:
+        await interaction.response.send_message("Couldn't find the #city-proposal channel.")
+    return
 
 
 #############
