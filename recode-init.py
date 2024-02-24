@@ -6,6 +6,8 @@
 import os
 
 import discord
+from discord.ext import commands
+
 import asyncio
 from dotenv import load_dotenv
 
@@ -38,6 +40,8 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents.all()
 intents.message_content = True
 
+bot = commands.Bot(command_prefix="/",intents=intents)
+
 class MyClient(discord.Client):
     def __init__(self, *, intents: discord.Intents):
         super().__init__(intents=intents)
@@ -49,6 +53,7 @@ class MyClient(discord.Client):
         # Note: When using commands.Bot instead of discord.Client, the bot will
         # maintain its own tree instead.
         self.tree = discord.app_commands.CommandTree(self)
+
 
 
 client = MyClient(intents=intents)
@@ -65,15 +70,24 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
 
 
+
+
+
 #######################
 # ON DEMAND FUNCTIONS #
 #######################
 
 
-
-
-
-
+@bot.tree.command()
+async def add_stuff(
+    interaction: discord.Interaction,
+    # This makes it so the first parameter can only be between 0 to 100.
+    first: discord.app_commands.Range[int, 0, 100],
+    # This makes it so the second parameter must be over 0, with no maximum limit.
+    second: discord.app_commands.Range[int, 0, None],
+):
+    """Adds two numbers together"""
+    await interaction.response.send_message(f'{first} + {second} = {first + second}', ephemeral=True)
 
 
 
