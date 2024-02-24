@@ -58,6 +58,8 @@ class MyClient(discord.Client):
 
 client = MyClient(intents=intents)
 
+the_tree = client.tree
+
 ##########################
 # ASYNCHRONOUS FUNCTIONS #
 ###########################
@@ -67,6 +69,7 @@ client = MyClient(intents=intents)
 @client.event
 async def on_ready():
     #prints this when bot has connected to discord
+    await the_tree.sync(guild=discord.Object(id=1200191417457324069))
     print(f'{client.user} has connected to Discord!')
 
 
@@ -78,18 +81,17 @@ async def on_ready():
 #######################
 
 
-@bot.tree.command()
-async def add_stuff(
-    interaction: discord.Interaction,
-    # This makes it so the first parameter can only be between 0 to 100.
-    first: discord.app_commands.Range[int, 0, 100],
-    # This makes it so the second parameter must be over 0, with no maximum limit.
-    second: discord.app_commands.Range[int, 0, None],
-):
-    """Adds two numbers together"""
-    await interaction.response.send_message(f'{first} + {second} = {first + second}', ephemeral=True)
-
-
+# Add the guild ids in which the slash command will appear.
+# If it should be in all, remove the argument, but note that
+# it will take some time (up to an hour) to register the
+# command if it's for all guilds.
+@the_tree.command(
+    name="commandname",
+    description="My first application Command",
+    guild=discord.Object(id=1200191417457324069)
+)
+async def first_command(interaction):
+    await interaction.response.send_message("Hello!")
 
 
 
