@@ -261,13 +261,13 @@ async def on_ready():
 async def on_raw_reaction_add(reaction):
     channelID = '1202360433768677396'
     guild=discord.Object(id=1200191417457324069)
-    emoji=":regional_indicator_"+str(reaction.emoji)
+    emoji=":regional_indicator_"+str(reaction.emoji)+":"
     print(emoji)
     for i in stateReactionRoleData:
         state_react=stateReactionRoleData[i]   
         if reaction.channel_id != channelID:
             continue 
-        if emoji == f"<{state_react[2]}>":
+        if emoji == f"<{state_react[1]}>":
            # add_roles(*roles, reason=None, atomic=True)
             await reaction.member.add_roles(get(guild.roles, id=state_react[0]), reason="reaction", atomic=True)
 
