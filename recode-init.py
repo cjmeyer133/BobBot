@@ -258,13 +258,14 @@ async def on_ready():
 
 
 @client.event
-async def on_reaction_add(reaction, user):
+async def on_raw_reaction_add(reaction):
     channelID = '1202360433768677396'
     guild=discord.Object(id=1200191417457324069)
+    print (reaction.member)
 
     for i in stateReactionRoleData:    
-        if reaction.message.channel.id != channelID:
-            continue #So it only happens in the specified channel
+        if reaction.channel_id != channelID:
+            continue 
         if str(reaction.emoji) == f"<{stateReactionRoleData.get(i)[1]}{stateReactionRoleData.get(i)[2]}>":
             await client.add_roles(user, get(guild.roles, id=stateReactionRoleData.get(i)[0]))
 
