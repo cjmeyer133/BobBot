@@ -1,5 +1,3 @@
-# #initializing things I think???
-
 #adapted from Unbelieva-Boat by github user h-ntai 
 import json, os, time, random, math, sys, discord, math
 from datetime import datetime, timezone, timedelta
@@ -185,6 +183,8 @@ class channel_db_handler:
 
         #determine which entry to edit
         id_index = self.find_id_in_db(self, db, ID)
+        if(id_index == -1):
+            return "failure", f"failed to find the provided id {id} in the specified database {db}"
 
         json_entry_content = json_content[db][id_index]
         old_value = "N/A"
@@ -210,74 +210,21 @@ class channel_db_handler:
     # REMOVE CITY/STATE COMBO FROM EITHER THE PROPOSED OR EXISTING CHANNELS DB
     #
 
-    # async def remove_entry(self, item_name):
-    #     # load json
-    #     json_file = open(self.pathToJson, "r")
-    #     json_content = json.load(json_file)
+    async def remove_entry(self, db, ID):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
 
-    #     json_items = json_content["items"]
-    #     item_found = item_index = 0
-    #     for i in range(len(json_items)):
-    #         if json_items[i]["name"] == item_name:
-    #             item_found = 1
-    #             item_index = i
-    #     if not item_found:
-    #         return "error", "Item not found."
+        json_DB = json_content[db]
+        index_to_remove = self.find_id_in_db(self, db, ID)
+        if(index_to_remove == -1):
+            return "failure", f"failed to find the provided id {id} in the specified database {db}"
 
-    #     # delete from the "items" section
-    #     json_items.pop(item_index)
+        # delete from the "items" section
+        json_DB.pop(index_to_remove)
 
-    #     # delete for everyone who had it in their inventory
-    #     user_content = json_content["userdata"]
-    #     for i in range(len(user_content)):
-    #         # tricky
-    #         # i suppose the variable type will either be a string with "none"
-    #         # or a list with lists : ["item_name", amount], so items = [ [], [] ] etc
-    #         if user_content[i]["items"] == "none":
-    #             pass
-    #         else:
-    #             try:
-    #                 for ii in range(len(user_content[i]["items"])):
-    #                     print(user_content[i]["items"][ii])
-    #                     current_name = user_content[i]["items"][ii][0]
-    #                     if current_name == item_name:
-    #                         user_content[i]["items"].pop(ii)
-    #             except Exception as e:
-    #                 print(e)
+        # overwrite, end
+        json_content[db] = json_DB
+        self.overwrite_json(json_content)
 
-    #     # overwrite, end
-    #     json_content["items"] = json_items
-    #     self.overwrite_json(json_content)
-
-    #     return "success", "success"       
-    
-    #
-    # CHECK DB FOR CITY/STATE COMBO
-    #
-
-    # async def check_DB(self, user, channel, username, user_pfp):
-    #     # load json
-    #     json_file = open(self.pathToJson, "r")
-    #     json_content = json.load(json_file)
-
-    #     user_index, new_data = self.find_index_in_db(json_content["userdata"], user)
-    #     user_content = json_content["userdata"][user_index]
-
-    #     items = user_content["items"]
-    #     if items == "none":
-    #         inventory_checkup = "**Inventory empty. No items owned.**"
-    #     else:
-    #         inventory_checkup = ""
-    #         for i in range(len(items)):
-    #             inventory_checkup += f"Item: `{items[i][0]}`; amount: `{items[i][1]}`\n"
-
-    #     color = self.discord_blue_rgb_code
-    #     embed = discord.Embed(title="Owned Items", description=f"{inventory_checkup}", color=color)
-    #     embed.set_author(name=username, icon_url=user_pfp)
-    #     embed.set_footer(text="nice")
-    #     await channel.send(embed=embed)
-
-    #     # overwrite, end
-    #     # not needed
-
-    #     return "success", "success"
+        return "success", "success"       
