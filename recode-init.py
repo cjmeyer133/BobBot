@@ -222,6 +222,8 @@ stateReactionRoleData = {
 "WV" : ["1202728921825677383", ":regional_indicator_W:", "1202732644865941636"], #6th 3 #"eastern"
 "WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
 }
+state_names= list(stateRegionNamesAndAbbrevs.keys())
+state_abbr= list(stateRegionNamesAndAbbrevs.values())
 
 class the_role():
     def init(self, name, id):
@@ -282,14 +284,13 @@ async def on_raw_reaction_add(reaction):
     emoji=str(reaction.emoji)
     print(reaction.emoji)
     for i in stateReactionRoleData:
-        state_react=stateReactionRoleData[i] 
+        state_react=stateReactionRoleData[i]
         if reaction.channel_id != channelID:
             print("Didn't match!")
             continue 
         if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
-            state_key=state_react.keys()
-            state_name=stateRegionNamesAndAbbrevs.keys()[stateRegionNamesAndAbbrevs.values(state_key)]
+            state_name=state_names[state_abbr.index(i)]
             role_use=the_role()
             the_role.init(role_use, state_name, int(state_react[0]))
             await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
