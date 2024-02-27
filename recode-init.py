@@ -155,16 +155,26 @@ validStatesRegionsAndRoles = {
 
 stateReactionRoleData = {
 #ABR : [roleID, :emoji_name:, postID]
-"AK" : ["1202725827436085278", ":regional_indicator_A:", "1202725835941871688"], #1st 1 #"western"
-"AL" : ["1202725789037109290", ":regional_indicator_B:", "1202731356036005968"], #1st 0 #"southern"
-"AR" : ["1202725897405210775", ":regional_indicator_R:", "1202731356036005968"], #1st 4 #"southern"
-"AS" : ["1207796958794879100", ":regional_indicator_S:", "1203053376594772069"], #1st 2 #"territories"
-"AZ" : ["1202725869525672010", ":regional_indicator_A:", "1202731356036005968"], #1st 3 #"southern" 
-"CA" : ["1202725981790670859", ":regional_indicator_C:", "1202725835941871688"], #1st 5 #"western"
-"CO" : ["1202726182710280262", ":regional_indicator_D:", "1202725835941871688"], #1st 6 #"western"
-"CT" : ["1202726031786774528", ":regional_indicator_C:", "1202721704774996079"], #1st 7 #"north-eastern"
-"DC" : ["1202728841504751687", ":regional_indicator_W:", "1203053376594772069"], #1st 9 #"territories"
-"DE" : ["1202726227648192522", ":regional_indicator_D:", "1202721704774996079"], #1st 8 #"north-eastern"
+# "Alabama" : "AL",
+# "Alaska" : "AK",
+# "American Samoa" : "AS",
+# "Arizona" : "AZ",
+# "Arkansas" : "AR",
+# "California" : "CA",
+# "Colorado" : "CO",
+# "Connecticut" : "CT",
+# "Delaware" : "DE",
+# "Washington, DC" : "DC",
+"AK" : ["1202725827436085278", "<:server1:1212059088586805258>", "1202725835941871688"], #1st 1 #"western"
+"AL" : ["1202725789037109290", "<:server0:1212059040675397712>", "1202731356036005968"], #1st 0 #"southern"
+"AR" : ["1202725897405210775", "<:server4:1212059094714687528>", "1202731356036005968"], #1st 4 #"southern"
+"AS" : ["1207796958794879100", "<:server2:1212059090935750677>", "1203053376594772069"], #1st 2 #"territories"
+"AZ" : ["1202725869525672010", "<:server3:1212059093481562233>", "1202731356036005968"], #1st 3 #"southern" 
+"CA" : ["1202725981790670859", "<:server5:1212059096476286986>", "1202725835941871688"], #1st 5 #"western"
+"CO" : ["1202726182710280262", "<:server6:1212059098091233300>", "1202725835941871688"], #1st 6 #"western"
+"CT" : ["1202726031786774528", "<:server7:1212059098967969833>", "1202721704774996079"], #1st 7 #"north-eastern"
+"DC" : ["1202728841504751687", "<:server9:1212059101320716358>", "1203053376594772069"], #1st 9 #"territories"
+"DE" : ["1202726227648192522", "<:server8:1212059099835924520>", "1202721704774996079"], #1st 8 #"north-eastern"
 "FL" : ["1202726289476423741", ":regional_indicator_F:", "1202731356036005968"], #2nd 0 #"southern"
 "GA" : ["1202726426537889843", ":regional_indicator_G:", "1202731356036005968"], #2nd 1 #"southern"
 "GU" : ["1207797567627333632", ":regional_indicator_G:", "1203053376594772069"], #2nd 2 #"territories"
@@ -244,6 +254,7 @@ class MyClient(discord.Client):
 client = MyClient(intents=intents)
 dClient = discord.Client(intents=discord.Intents.default())
 
+#making it easier to call the tree to add functions
 the_tree = client.tree
 
 ##########################
