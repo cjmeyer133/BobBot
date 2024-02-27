@@ -404,16 +404,21 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         await interaction.response.send_message(f"Sorry, no state or region exists with the name or abbreviation \"{state_or_region}\".")
         return
 
-    # Check if the city/state combo already exists
-    # if database.check_existing_channel(city, stateOrRegionAbbr):
-    #     await ctx.send("This city/state combo already has a channel.")
-    #     return
 
+    index_in_existing = await db_handler.find_city_state_in_db("existing", city, state_or_region)
+    print(index_in_existing[0] +" is where the city/state combo is in existing")
+    # Check if the city/state combo already exists
+    if int(index_in_existing[0]) != -1:
+        await interaction.send("This city/state combo already has a channel. Here's a link to join it: ")
+        return
+
+    index_in_proposed = await db_handler.find_city_state_in_db("proposed", city, state_or_region)
+    print(index_in_existing[0] +" is where the city/state combo is in proposed")
     # Check if the city/state combo was already suggested
-    # if database.check_existing_suggestion(city, stateOrRegionAbbr):
-    #     suggestion_post_link = database.get_suggestion_post_link(city, stateOrRegionAbbr)
-    #     await ctx.send(f"This city/state combo was already suggested. Here's the link: {suggestion_post_link}")
-    #     return
+    if int(index_in_proposed[0]) != -1:
+        suggestion_post_link = database.find_id_by_city_state(city, state_or_region)
+        await interaction.send(f"This city/state combo was already suggested. Here's the link: https://discord.com/channels/1200191417457324069/1202356899773685770/{suggestion_post_link}")
+        return
 
     #Make a post in the #city-proposal channel
     channel = client.get_channel(1202356899773685770)

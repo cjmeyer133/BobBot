@@ -78,7 +78,7 @@ class channel_db_handler:
     GLOBAL FUNCTIONS
     """
 
-    # need to overwrite the whole json when updating, luckily the database won't be enormous
+    # need to overwrite the whole json when updating
     def overwrite_json(self, content):
         self.json_db = open(self.pathToJson, "w")
         self.clean_json = json.dumps(content, indent=4, separators=(",", ": "))
@@ -87,6 +87,9 @@ class channel_db_handler:
 
 
     def find_id_in_db(self, db, ID_to_find):
+        if(db != "existing" and db != "proposed"):
+            return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
+
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
@@ -108,6 +111,9 @@ class channel_db_handler:
         return -1, "ID not found"
             
     def find_city_state_in_db(self, db, city, state_abbr):
+        if(db != "existing" and db != "proposed"):
+            return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
+
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
@@ -122,6 +128,31 @@ class channel_db_handler:
                 return int(i), "none"
           
         #if we get here, the combo does not exist in the given data
+        return -1, "city/state combo not found"
+    
+    def find_id_by_city_state(self, db, city, state_abbr):
+        if(db != "existing" and db != "proposed"):
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
+
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        #determine the data to loop over
+        data_to_search = json_content[db]
+        print(data_to_search)
+        
+        for i in range(len(data_to_search)):
+            if (data_to_search[i]["city"] == city and data_to_search[i]["state_abbr"] == state_abbr):
+                print("\nfound entry\n")
+                if(db == "existing"):
+                    return data_to_search[i]["channel_ID"], "none"
+                if(db == "proposed"):
+                    return data_to_search[i]["post_ID"], "none"
+          
+        #if we get here, the combo does not exist in the given data
+        print("city/state combo not found")
         return -1, "city/state combo not found"
   
 
