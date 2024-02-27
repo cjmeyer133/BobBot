@@ -156,26 +156,26 @@ validStatesRegionsAndRoles = {
 
 stateReactionRoleData = {
 #ABR : [roleID, :emoji_name:, postID]
-# "Alabama" : "AL",
-# "Alaska" : "AK",
-# "American Samoa" : "AS",
-# "Arizona" : "AZ",
-# "Arkansas" : "AR",
-# "California" : "CA",
-# "Colorado" : "CO",
-# "Connecticut" : "CT",
-# "Delaware" : "DE",
-# "Washington, DC" : "DC",
-"AK" : ["1202725827436085278", "<:server1:1212059088586805258>", "1202725835941871688"], #1st 1 #"western"
-"AL" : ["1202725789037109290", "<:server0:1212059040675397712>", "1202731356036005968"], #1st 0 #"southern"
-"AR" : ["1202725897405210775", "<:server4:1212059094714687528>", "1202731356036005968"], #1st 4 #"southern"
-"AS" : ["1207796958794879100", "<:server2:1212059090935750677>", "1203053376594772069"], #1st 2 #"territories"
-"AZ" : ["1202725869525672010", "<:server3:1212059093481562233>", "1202731356036005968"], #1st 3 #"southern" 
-"CA" : ["1202725981790670859", "<:server5:1212059096476286986>", "1202725835941871688"], #1st 5 #"western"
-"CO" : ["1202726182710280262", "<:server6:1212059098091233300>", "1202725835941871688"], #1st 6 #"western"
-"CT" : ["1202726031786774528", "<:server7:1212059098967969833>", "1202721704774996079"], #1st 7 #"north-eastern"
-"DC" : ["1202728841504751687", "<:server9:1212059101320716358>", "1203053376594772069"], #1st 9 #"territories"
-"DE" : ["1202726227648192522", "<:server8:1212059099835924520>", "1202721704774996079"], #1st 8 #"north-eastern"
+# "Florida" : "FL",
+# "Georgia" : "GA",
+# "Guam" : "GU",
+# "Hawaii" : "HI",
+# "Idaho" : "ID",
+# "Illinois": "IL",
+# "Indiana": "IN",
+# "Iowa" : "IA",
+# "Kansas": "KS",
+# "Kentucky": "KY",
+"AK" : ["1202725827436085278", "<:server1:1212059088586805258>", "1211798235652423710"], #1st 1 
+"AL" : [1202725789037109290, "<:server0:1212059040675397712>", "1211798235652423710"], #1st 0 
+"AR" : ["1202725897405210775", "<:server4:1212059094714687528>", "1211798235652423710"], #1st 4 
+"AS" : ["1207796958794879100", "<:server2:1212059090935750677>", "1211798235652423710"], #1st 2 
+"AZ" : ["1202725869525672010", "<:server3:1212059093481562233>", "1211798235652423710"], #1st 3 
+"CA" : ["1202725981790670859", "<:server5:1212059096476286986>", "1211798235652423710"], #1st 5 
+"CO" : ["1202726182710280262", "<:server6:1212059098091233300>", "1211798235652423710"], #1st 6 
+"CT" : ["1202726031786774528", "<:server7:1212059098967969833>", "1211798235652423710"], #1st 7 
+"DC" : ["1202728841504751687", "<:server9:1212059101320716358>", "1211798235652423710"], #1st 9 
+"DE" : ["1202726227648192522", "<:server8:1212059099835924520>", "1211798235652423710"], #1st 8 
 "FL" : ["1202726289476423741", ":regional_indicator_F:", "1202731356036005968"], #2nd 0 #"southern"
 "GA" : ["1202726426537889843", ":regional_indicator_G:", "1202731356036005968"], #2nd 1 #"southern"
 "GU" : ["1207797567627333632", ":regional_indicator_G:", "1203053376594772069"], #2nd 2 #"territories"
@@ -223,6 +223,13 @@ stateReactionRoleData = {
 "WV" : ["1202728921825677383", ":regional_indicator_W:", "1202732644865941636"], #6th 3 #"eastern"
 "WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
 }
+state_names= list(stateRegionNamesAndAbbrevs.keys())
+state_abbr= list(stateRegionNamesAndAbbrevs.values())
+
+class the_role():
+    def init(self, name, id):
+        self.name=name
+        self.id=id
 
 
 #CREATE ME
@@ -279,17 +286,21 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(reaction):
-    channelID = '1202360433768677396'
+    channelID = 1202360433768677396
     guild=discord.Object(id=1200191417457324069)
-    emoji=":regional_indicator_"+str(reaction.emoji)+":"
-    print(emoji)
+    emoji=str(reaction.emoji)
+    print(reaction.emoji)
     for i in stateReactionRoleData:
-        state_react=stateReactionRoleData[i]   
+        state_react=stateReactionRoleData[i]
         if reaction.channel_id != channelID:
+            print("Didn't match!")
             continue 
-        if emoji == f"<{state_react[1]}>":
+        if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
-            await reaction.member.add_roles(get(guild.roles, id=state_react[0]), reason="reaction", atomic=True)
+            state_name=state_names[state_abbr.index(i)]
+            role_use=the_role()
+            the_role.init(role_use, state_name, int(state_react[0]))
+            await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
 
 #function to add money to a user
 async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
