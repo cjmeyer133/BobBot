@@ -223,8 +223,10 @@ stateReactionRoleData = {
 "WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
 }
 
-class the_role(name, id):
-    def init(self, 
+class the_role():
+    def init(self, name, id):
+        self.name=name
+        self.id=id
 
 
 #CREATE ME
@@ -286,8 +288,9 @@ async def on_raw_reaction_add(reaction):
             continue 
         if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
-            
-            await reaction.member.add_roles(state_react[0], reason="reaction", atomic=True)
+            role_use=the_role()
+            the_role.init(role_use, state_react[0],1202725789037109290)
+            await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
 
 #function to add money to a user
 async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
