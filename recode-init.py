@@ -19,6 +19,7 @@ import logging.handlers
 from discord.ext.commands import Bot
 from discord.utils import get
 
+
 # custom database handler
 import database
 from time import sleep
@@ -257,6 +258,7 @@ dClient = discord.Client(intents=discord.Intents.default())
 #making it easier to call the tree to add functions
 the_tree = client.tree
 
+db_handler = database.channel_db_handler(bot)  # ("database.json")
 ##########################
 # ASYNCHRONOUS FUNCTIONS #
 ###########################
@@ -267,6 +269,11 @@ the_tree = client.tree
 async def on_ready():
     #prints this when bot has connected to discord
     await the_tree.sync(guild=discord.Object(id=1200191417457324069))
+    checkResult = await db_handler.check_json()
+    if(checkResult == "error"):
+        print("The file database/channel_database.json failed to open properly")
+    else:
+        print("Yay, opened the file correctly!")    
     print(f'{client.user} has connected to Discord!')
 
 
@@ -401,7 +408,7 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
     channel = client.get_channel(1202356899773685770)
     print(f"{channel}")    
     if channel:
-        message = f"Are you looking for Adderall in {city}, {state_or_region}? React with a ⏫ to this post to indicate your interest in a {city} channel! When this gets to 5 votes, the channel will be created."
+        message = f"Are you looking for Adderall in {city}, {state_or_region}? React with a <:ThumbsUpIcon:1209267015458627746> to this post to indicate your interest in a {city} channel! When this gets to 5 votes, the channel will be created."
         post = await channel.send(message)
 
         embed = discord.Embed()

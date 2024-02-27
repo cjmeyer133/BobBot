@@ -44,7 +44,7 @@ emoji_error = "❌"
 discord_error_rgb_code = discord.Color.from_rgb(239, 83, 80)
 intents = discord.Intents.all()
 client = Bot(command_prefix=BOT_PREFIX, intents=intents)  # init bot
-db_handler = database.pythonboat_database_handler(client)  # ("database.json")
+db_handler = database.channel_db_handler(client)  # ("database.json")
 with open("owner.json") as f:
     adminlist = json.load(f)
 
