@@ -166,7 +166,7 @@ stateReactionRoleData = {
 # "Kansas": "KS",
 # "Kentucky": "KY",
 "AK" : ["1202725827436085278", "<:server1:1212059088586805258>", "1211798235652423710"], #1st 1 
-"AL" : ["1202725789037109290", "<:server0:1212059040675397712>", "1211798235652423710"], #1st 0 
+"AL" : [1202725789037109290, "<:server0:1212059040675397712>", "1211798235652423710"], #1st 0 
 "AR" : ["1202725897405210775", "<:server4:1212059094714687528>", "1211798235652423710"], #1st 4 
 "AS" : ["1207796958794879100", "<:server2:1212059090935750677>", "1211798235652423710"], #1st 2 
 "AZ" : ["1202725869525672010", "<:server3:1212059093481562233>", "1211798235652423710"], #1st 3 
@@ -223,6 +223,9 @@ stateReactionRoleData = {
 "WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
 }
 
+class the_role(name, id):
+    def init(self, 
+
 
 #CREATE ME
 #suggestionPosts = A table, loaded from database.json, with the following fields: postID (string, id, unique, not null), city (string, not null), stateOrRegion (string, key of [validStatesRegionsAndRoles], not null). Contains one entry for every city/state combo that has been suggested, but not approved.
@@ -272,18 +275,19 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(reaction):
-    channelID = '1202360433768677396'
+    channelID = 1202360433768677396
     guild=discord.Object(id=1200191417457324069)
     emoji=str(reaction.emoji)
     print(reaction.emoji)
     for i in stateReactionRoleData:
         state_react=stateReactionRoleData[i]   
         if reaction.channel_id != channelID:
-
+            print("Didn't match!")
             continue 
-        if emoji == f"<{state_react[1]}>":
+        if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
-            await reaction.member.add_roles(get(guild.roles, id=state_react[0]), reason="reaction", atomic=True)
+            
+            await reaction.member.add_roles(state_react[0], reason="reaction", atomic=True)
 
 #function to add money to a user
 async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
