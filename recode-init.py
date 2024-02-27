@@ -273,6 +273,63 @@ async def on_raw_reaction_add(reaction):
            # add_roles(*roles, reason=None, atomic=True)
             await reaction.member.add_roles(get(guild.roles, id=state_react[0]), reason="reaction", atomic=True)
 
+#function to add money to a user
+async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
+
+         if new_data != "none":
+             json_content["userdata"] = new_data
+
+         json_recept_content = json_content["userdata"][reception_user_index]
+
+         json_recept_content["cash"] += int(amount)
+
+         # inform user
+         color = self.discord_success_rgb_code
+         embed = discord.Embed(
+         description=f"✅  Added {str(self.currency_symbol)} {'{:,}'.format(int(amount))} to <@{recept_uname.id}>'s cash balance",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][reception_user_index] = json_recept_content
+         self.overwrite_json(json_content)
+
+         return "success", "success"
+
+#Function to remove money from a user
+async def remove_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
+
+         if new_data != "none":
+             json_content["userdata"] = new_data
+
+         json_recept_content = json_content["userdata"][reception_user_index]
+
+         json_recept_content["cash"] -= int(amount)
+
+         # inform user
+         color = self.discord_success_rgb_code
+         embed = discord.Embed(
+             description=f"✅  Removed {str(self.currency_symbol)} {'{:,}'.format(int(amount))} from <@{recept_uname.id}>'s cash balance",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][reception_user_index] = json_recept_content
+         self.overwrite_json(json_content)
+
+         return "success", "success"
+
+
 
 #######################
 # ON DEMAND FUNCTIONS #
@@ -346,6 +403,110 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
 
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
+
+#Function to buy items
+async def buy_item(self, user, channel, username, user_pfp, item_name, amount, user_roles, server_object,
+                        user_object):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+
+         json_items = json_content["items"]
+         item_found = item_index = 0
+         for i in range(len(json_items)):
+             if json_items[i]["name"] == item_name:
+                 item_found = 1
+                 item_index = i
+         if not item_found:
+             return "error", "Item not found."
+         item = json_items[item_index]
+         # get variables
+         item_name = item_name
+         item_price = item["price"]
+         req_roles = item["required_roles"]
+         give_roles = item["given_roles"]
+         rem_roles = item["removed_roles"]
+         max_bal = item["maximum_balance"]
+         remaining_stock = item["amount_in_stock"]
+         expiration_date = item["expiration_date"]
+         reply_message = item["reply_message"]
+
+         # calculate expiration
+         today = datetime.today()
+         expire = datetime.strptime(expiration_date, "%Y-%m-%d %H:%M:%S.%f")
+         if today > expire:
+             return "error", f"Item has already expired. Expiring date was {expiration_date}"
+         # else we're good
+
+         # 1. check req roles
+         try:
+             if req_roles == "none":
+                 pass
+             else:
+                 for i in range(len(req_roles)):
+                     if int(req_roles[i]) not in user_roles:
+                         return "error", f"User does not seem to have all required roles."
+         except Exception as e:
+             print(e)
+             return "error", f"Unexpected error."
+
+         # 2. check give roles
+         try:
+             if rem_roles == "none":
+                 pass
+             else:
+                 for i in range(len(rem_roles)):
+                     role = discord.utils.get(server_object.roles, id=int(rem_roles[i]))
+                     print(role)
+                     await user_object.remove_roles(role)
+         except Exception as e:
+             print(e)
+             return "error", f"Unexpected error."
+
+         # 3. check rem roles
+         try:
+             if req_roles == "none":
+                 pass
+             else:
+                 for i in range(len(give_roles)):
+                     role = discord.utils.get(server_object.roles, id=int(give_roles[i]))
+                     print(role)
+                     await user_object.add_roles(role)
+         except Exception as e:
+             print(e)
+             return "error", f"Unexpected error."
+
+         # 4. check if enough money
+         sum_price = item_price * amount
+         sum_price = round(sum_price, 0)
+         user_index, new_data = self.find_index_in_db(json_content["userdata"], user)
+         user_content = json_content["userdata"][user_index]
+         user_cash = user_content["cash"]
+         if user_cash < sum_price:
+             return "error", f"Error! Not enough money in cash to purchase.\nto pay: {sum_price} ; in cash: {user_cash}"
+
+         # 5. rem money, print message, add to inventory
+         user_content["cash"] -= sum_price
+    
+         if user_content["items"] == "none":
+             user_content["items"] = [[item_name, amount]]
+         else:
+             user_content["items"].append([item_name, amount])
+
+         color = self.discord_blue_rgb_code
+         embed = discord.Embed(
+             description=f"You have bought {amount} {item_name} and paid {str(self.currency_symbol)} **{'{:,}'.format(int(sum_price))}**",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         embed.set_footer(text=reply_message)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][user_index] = user_content
+         json_content["items"] = json_items
+         self.overwrite_json(json_content)
+
+         return "success", "success"
 
 
 #############
