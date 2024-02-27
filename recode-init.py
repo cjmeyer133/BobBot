@@ -282,14 +282,16 @@ async def on_raw_reaction_add(reaction):
     emoji=str(reaction.emoji)
     print(reaction.emoji)
     for i in stateReactionRoleData:
-        state_react=stateReactionRoleData[i]   
+        state_react=stateReactionRoleData[i] 
         if reaction.channel_id != channelID:
             print("Didn't match!")
             continue 
         if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
+            state_key=state_react.keys()
+            state_name=stateRegionNamesAndAbbrevs.keys()[stateRegionNamesAndAbbrevs.values(state_key)]
             role_use=the_role()
-            the_role.init(role_use, state_react[0],1202725789037109290)
+            the_role.init(role_use, state_name, int(state_react[0]))
             await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
 
 #function to add money to a user
