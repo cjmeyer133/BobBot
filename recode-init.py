@@ -344,7 +344,8 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
 
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
-    
+
+#function to add money to a user
 async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
          # load json
          json_file = open(self.pathToJson, "r")
@@ -372,7 +373,33 @@ async def add_money(self, user, channel, username, user_pfp, reception_user, amo
 
          return "success", "success"
 
+#Function to remove money from a user
+async def remove_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
 
+         if new_data != "none":
+             json_content["userdata"] = new_data
+
+         json_recept_content = json_content["userdata"][reception_user_index]
+
+         json_recept_content["cash"] -= int(amount)
+
+         # inform user
+         color = self.discord_success_rgb_code
+         embed = discord.Embed(
+             description=f"✅  Removed {str(self.currency_symbol)} {'{:,}'.format(int(amount))} from <@{recept_uname.id}>'s cash balance",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][reception_user_index] = json_recept_content
+         self.overwrite_json(json_content)
+
+         return "success", "success"
 
 #############
 # START BOT #
