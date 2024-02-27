@@ -40,6 +40,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 stateRegionNamesAndAbbrevs = {
 "Alabama" : "AL",
 "Alaska" : "AK",
+"American Samoa" : "AS",
 "Arizona" : "AZ",
 "Arkansas" : "AR",
 "California" : "CA",
@@ -49,6 +50,7 @@ stateRegionNamesAndAbbrevs = {
 "Washington, DC" : "DC",
 "Florida" : "FL",
 "Georgia" : "GA",
+"Guam" : "GU",
 "Hawaii" : "HI",
 "Idaho" : "ID",
 "Illinois": "IL",
@@ -57,7 +59,7 @@ stateRegionNamesAndAbbrevs = {
 "Kansas": "KS",
 "Kentucky": "KY",
 "Louisiana" : "LA",
-"Maine" : "MA",
+"Maine" : "ME",
 "Maryland" : "MD",
 "Massachusetts" : "MA",
 "Michigan" : "MI",
@@ -153,62 +155,62 @@ validStatesRegionsAndRoles = {
 
 stateReactionRoleData = {
 #ABR : [roleID, :emoji_name:, postID]
-"AK" : ["1202725827436085278", ":regional_indicator_A:", "1202725835941871688"], #"western"
-"AL" : ["1202725789037109290", ":regional_indicator_B:", "1202731356036005968"], #"southern"
-"AR" : ["1202725897405210775", ":regional_indicator_R:", "1202731356036005968"], #"southern"
-"AS" : ["1207796958794879100", ":regional_indicator_S:", "1203053376594772069"], #"territories"
-"AZ" : ["1202725869525672010", ":regional_indicator_A:", "1202731356036005968"], #"southern" 
-"CA" : ["1202725981790670859", ":regional_indicator_C:", "1202725835941871688"], #"western"
-"CO" : ["1202726182710280262", ":regional_indicator_D:", "1202725835941871688"], #"western"
-"CT" : ["1202726031786774528", ":regional_indicator_C:", "1202721704774996079"], #"north-eastern"
-"DC" : ["1202728841504751687", ":regional_indicator_W:", "1203053376594772069"], #"territories"
-"DE" : ["1202726227648192522", ":regional_indicator_D:", "1202721704774996079"], #"north-eastern"
-"FL" : ["1202726289476423741", ":regional_indicator_F:", "1202731356036005968"], #"southern"
-"GA" : ["1202726426537889843", ":regional_indicator_G:", "1202731356036005968"], #"southern"
-"GU" : ["1207797567627333632", ":regional_indicator_G:", "1203053376594772069"], #"territories"
-"HI" : ["1202726446569623593", ":regional_indicator_H:", "1202725835941871688"], #"western"
-"IA" : ["1202726553302081577", ":regional_indicator_A:", "1202725518890246217"], #"midwestern"
-"ID" : ["1202726466832437259", ":regional_indicator_I:", "1202725835941871688"], #"western"
-"IL" : ["1202726490593034292", ":regional_indicator_L:", "1202725518890246217"], #"midwestern"
-"IN" : ["1202726525405896754", ":regional_indicator_I:", "1202725518890246217"], #"midwestern"
-"KS" : ["1202726623389024404", ":regional_indicator_K:", "1202725518890246217"], #"midwestern"
-"KY" : ["1202726679185723422", ":regional_indicator_K:", "1202732644865941636"], #"eastern"
-"LA" : ["1202726758160404560", ":regional_indicator_L:", "1202731356036005968"], #"southern"
-"MA" : ["1202725605729116201", ":regional_indicator_M:", "1202721704774996079"], #"north-eastern"
-"MD" : ["1202726803639369768", ":regional_indicator_M:", "1202732644865941636"], #"eastern"
-"ME" : ["1202726787784769546", ":regional_indicator_N:", "1202721704774996079"], #"north-eastern"
-"MI" : ["1202726856533614624", ":regional_indicator_M:", "1202725518890246217"], #"midwestern"
-"MN" : ["1202727443723591760", ":regional_indicator_T:", "1202721704774996079"], #"north-eastern"
-"MO" : ["1202727443723591760", ":regional_indicator_R:", "1202725518890246217"], #"midwestern"
-"MP" : ["1208110392761389177", ":regional_indicator_M:", "1203053376594772069"], #"territories"
-"MS" : ["1202727521188315137", ":regional_indicator_M:", "1202731356036005968"], #"southern"
-"MT" : ["1202727107982139473", ":regional_indicator_M:", "1202725835941871688"], #"western"
-"NC" : ["1202727886948278353", ":regional_indicator_N:", "1202732644865941636"], #"eastern"
-"ND" : ["1202727951356002376", ":regional_indicator_N:", "1202725518890246217"], #"midwestern"
-"NE" : ["1202727580688711760", ":regional_indicator_B:", "1202725518890246217"], #"midwestern"
-"NH" : ["1202727765015527445", ":regional_indicator_H:", "1202721704774996079"], #"north-eastern"
-"NJ" : ["1202727809555107890", ":regional_indicator_J:", "1202721704774996079"], #"north-eastern"
-"NM" : ["1202727834427064320", ":regional_indicator_N:", "1202731356036005968"], #"southern"
-"NV" : ["1202727744325287957", ":regional_indicator_N:", "1202725835941871688"], #"western"
-"NY" : ["1202727859878240296", ":regional_indicator_Y:", "1202721704774996079"], #"north-eastern"
-"OH" : ["1202727977478262834", ":regional_indicator_O:", "1202725518890246217"], #"midwestern"
-"OK" : ["1202728113721577562", ":regional_indicator_O:", "1202731356036005968"], #"southern"
-"OR" : ["1202728134642901022", ":regional_indicator_O:", "1202725835941871688"], #"western"
-"PA" : ["1202728166456565831", ":regional_indicator_P:", "1202721704774996079"], #"north-eastern"
-"PR" : ["1208111221300002836", ":regional_indicator_P:", "1203053376594772069"], #"territories"
-"RI" : ["1202728206701166592", ":regional_indicator_R:", "1202721704774996079"], #"north-eastern"
-"SC" : ["1202728254990061648", ":regional_indicator_S:", "1202732644865941636"], #"eastern"
-"SD" : ["1202728300565368853", ":regional_indicator_S:", "1202725518890246217"], #"midwestern"
-"TN" : ["1202728540987199518", ":regional_indicator_T:", "1202732644865941636"], #"eastern" 
-"TX" : ["1202728587002650624", ":regional_indicator_T:", "1202731356036005968"], #"southern"
-"UT" : ["1202728725226193036", ":regional_indicator_U:", "1202725835941871688"], #"western"
-"VA" : ["1202728774672842843", ":regional_indicator_V:", "1202732644865941636"], #"eastern" 
-"VI" : ["1208112579235283014", ":regional_indicator_V:", "1203053376594772069"], #"territories"
-"VT" : ["1202728746663018576", ":regional_indicator_V:", "1202721704774996079"], #"north-eastern"
-"WA" : ["1202728794343997481", ":regional_indicator_W:", "1202725835941871688"], #"western" 
-"WI" : ["1202728976733184030", ":regional_indicator_W:", "1202725518890246217"], #"midwestern"
-"WV" : ["1202728921825677383", ":regional_indicator_W:", "1202732644865941636"], #"eastern"
-"WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #"western"
+"AK" : ["1202725827436085278", ":regional_indicator_A:", "1202725835941871688"], #1st 1 #"western"
+"AL" : ["1202725789037109290", ":regional_indicator_B:", "1202731356036005968"], #1st 0 #"southern"
+"AR" : ["1202725897405210775", ":regional_indicator_R:", "1202731356036005968"], #1st 4 #"southern"
+"AS" : ["1207796958794879100", ":regional_indicator_S:", "1203053376594772069"], #1st 2 #"territories"
+"AZ" : ["1202725869525672010", ":regional_indicator_A:", "1202731356036005968"], #1st 3 #"southern" 
+"CA" : ["1202725981790670859", ":regional_indicator_C:", "1202725835941871688"], #1st 5 #"western"
+"CO" : ["1202726182710280262", ":regional_indicator_D:", "1202725835941871688"], #1st 6 #"western"
+"CT" : ["1202726031786774528", ":regional_indicator_C:", "1202721704774996079"], #1st 7 #"north-eastern"
+"DC" : ["1202728841504751687", ":regional_indicator_W:", "1203053376594772069"], #1st 9 #"territories"
+"DE" : ["1202726227648192522", ":regional_indicator_D:", "1202721704774996079"], #1st 8 #"north-eastern"
+"FL" : ["1202726289476423741", ":regional_indicator_F:", "1202731356036005968"], #2nd 0 #"southern"
+"GA" : ["1202726426537889843", ":regional_indicator_G:", "1202731356036005968"], #2nd 1 #"southern"
+"GU" : ["1207797567627333632", ":regional_indicator_G:", "1203053376594772069"], #2nd 2 #"territories"
+"HI" : ["1202726446569623593", ":regional_indicator_H:", "1202725835941871688"], #2nd 3 #"western"
+"IA" : ["1202726553302081577", ":regional_indicator_A:", "1202725518890246217"], #2nd 7 #"midwestern"
+"ID" : ["1202726466832437259", ":regional_indicator_I:", "1202725835941871688"], #2nd 4 #"western"
+"IL" : ["1202726490593034292", ":regional_indicator_L:", "1202725518890246217"], #2nd 5 #"midwestern"
+"IN" : ["1202726525405896754", ":regional_indicator_I:", "1202725518890246217"], #2nd 6 #"midwestern"
+"KS" : ["1202726623389024404", ":regional_indicator_K:", "1202725518890246217"], #2nd 8 #"midwestern"
+"KY" : ["1202726679185723422", ":regional_indicator_K:", "1202732644865941636"], #2nd 9 #"eastern"
+"LA" : ["1202726758160404560", ":regional_indicator_L:", "1202731356036005968"], #3rd 0 #"southern"
+"MA" : ["1202725605729116201", ":regional_indicator_M:", "1202721704774996079"], #3rd 3 #"north-eastern"
+"MD" : ["1202726803639369768", ":regional_indicator_M:", "1202732644865941636"], #3rd 2 #"eastern"
+"ME" : ["1202726787784769546", ":regional_indicator_N:", "1202721704774996079"], #3rd 1 #"north-eastern"
+"MI" : ["1202726856533614624", ":regional_indicator_M:", "1202725518890246217"], #3rd 4 #"midwestern"
+"MN" : ["1202727443723591760", ":regional_indicator_T:", "1202721704774996079"], #3rd 5 #"north-eastern"
+"MO" : ["1202727443723591760", ":regional_indicator_R:", "1202725518890246217"], #3rd 7 #"midwestern"
+"MP" : ["1208110392761389177", ":regional_indicator_M:", "1203053376594772069"], #4th 7 #"territories"
+"MS" : ["1202727521188315137", ":regional_indicator_M:", "1202731356036005968"], #3rd 6 #"southern"
+"MT" : ["1202727107982139473", ":regional_indicator_M:", "1202725835941871688"], #3rd 8 #"western"
+"NC" : ["1202727886948278353", ":regional_indicator_N:", "1202732644865941636"], #4th 5 #"eastern"
+"ND" : ["1202727951356002376", ":regional_indicator_N:", "1202725518890246217"], #4th 6 #"midwestern"
+"NE" : ["1202727580688711760", ":regional_indicator_B:", "1202725518890246217"], #3rd 9 #"midwestern"
+"NH" : ["1202727765015527445", ":regional_indicator_H:", "1202721704774996079"], #4th 1 #"north-eastern"
+"NJ" : ["1202727809555107890", ":regional_indicator_J:", "1202721704774996079"], #4th 2 #"north-eastern"
+"NM" : ["1202727834427064320", ":regional_indicator_N:", "1202731356036005968"], #4th 3 #"southern"
+"NV" : ["1202727744325287957", ":regional_indicator_N:", "1202725835941871688"], #4th 0 #"western"
+"NY" : ["1202727859878240296", ":regional_indicator_Y:", "1202721704774996079"], #4th 4 #"north-eastern"
+"OH" : ["1202727977478262834", ":regional_indicator_O:", "1202725518890246217"], #4th 8 #"midwestern"
+"OK" : ["1202728113721577562", ":regional_indicator_O:", "1202731356036005968"], #4th 9 #"southern"
+"OR" : ["1202728134642901022", ":regional_indicator_O:", "1202725835941871688"], #5th 0 #"western"
+"PA" : ["1202728166456565831", ":regional_indicator_P:", "1202721704774996079"], #5th 1 #"north-eastern"
+"PR" : ["1208111221300002836", ":regional_indicator_P:", "1203053376594772069"], #5th 2 #"territories"
+"RI" : ["1202728206701166592", ":regional_indicator_R:", "1202721704774996079"], #5th 3 #"north-eastern"
+"SC" : ["1202728254990061648", ":regional_indicator_S:", "1202732644865941636"], #5th 4 #"eastern"
+"SD" : ["1202728300565368853", ":regional_indicator_S:", "1202725518890246217"], #5th 5 #"midwestern"
+"TN" : ["1202728540987199518", ":regional_indicator_T:", "1202732644865941636"], #5th 6 #"eastern" 
+"TX" : ["1202728587002650624", ":regional_indicator_T:", "1202731356036005968"], #5th 7 #"southern"
+"UT" : ["1202728725226193036", ":regional_indicator_U:", "1202725835941871688"], #5th 8 #"western"
+"VA" : ["1202728774672842843", ":regional_indicator_V:", "1202732644865941636"], #6th 0 #"eastern" 
+"VI" : ["1208112579235283014", ":regional_indicator_V:", "1203053376594772069"], #6th 1 #"territories"
+"VT" : ["1202728746663018576", ":regional_indicator_V:", "1202721704774996079"], #5th 9 #"north-eastern"
+"WA" : ["1202728794343997481", ":regional_indicator_W:", "1202725835941871688"], #6th 2 #"western" 
+"WI" : ["1202728976733184030", ":regional_indicator_W:", "1202725518890246217"], #6th 4 #"midwestern"
+"WV" : ["1202728921825677383", ":regional_indicator_W:", "1202732644865941636"], #6th 3 #"eastern"
+"WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
 }
 
 
