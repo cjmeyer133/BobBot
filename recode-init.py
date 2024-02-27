@@ -290,17 +290,36 @@ async def on_raw_reaction_add(reaction):
     guild=discord.Object(id=1200191417457324069)
     emoji=str(reaction.emoji)
     print(reaction.emoji)
-    for i in stateReactionRoleData:
-        state_react=stateReactionRoleData[i]
-        if reaction.channel_id != channelID:
-            print("Didn't match!")
-            continue 
-        if emoji == state_react[1]:
+    if reaction.channel_id == channelID:
+        for i in stateReactionRoleData:
+            state_react=stateReactionRoleData[i]
+
+            if emoji == state_react[1]:
            # add_roles(*roles, reason=None, atomic=True)
-            state_name=state_names[state_abbr.index(i)]
-            role_use=the_role()
-            the_role.init(role_use, state_name, int(state_react[0]))
-            await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
+                state_name=state_names[state_abbr.index(i)]
+                role_use=the_role()
+                the_role.init(role_use, state_name, int(state_react[0]))
+                await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
+                print('Role added')
+
+@client.event
+async def on_raw_reaction_remove(reaction):
+    channelID = 1202360433768677396
+    the_guild=client.get_guild(1200191417457324069)
+    the_member=the_guild.get_member(reaction.user_id)
+    guild=discord.Object(id=1200191417457324069)
+    emoji=str(reaction.emoji)
+    print(reaction.emoji)
+    if reaction.channel_id == channelID:
+        for i in stateReactionRoleData:
+            state_react=stateReactionRoleData[i]
+            if emoji == state_react[1]:
+           # add_roles(*roles, reason=None, atomic=True)
+                state_name=state_names[state_abbr.index(i)]
+                role_use=the_role()
+                the_role.init(role_use, state_name, int(state_react[0]))
+                await the_member.remove_roles(role_use, reason="reaction", atomic=True)
+                print('Role removed') 
 
 #function to add money to a user
 async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
