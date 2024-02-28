@@ -61,15 +61,16 @@ class channel_db_handler:
 
             # check if the Worcester entry is there
             worcID = existing[0]["channel_ID"]
-            print(worcID+" is the channel_ID for the worcester channel")
+            print(worcID+" is the channel_ID for the worcester channel\n")
             worcCity = existing[0]["city"]
-            print(worcCity+" is the city for the worcester channel")
+            print(worcCity+" is the city for the worcester channel\n")
             worcAbbr = existing[0]["state_abbr"]
-            print(worcAbbr+" is the state or region abbreviation for the worcester channel")
+            print(worcAbbr+" is the state or region abbreviation for the worcester channel\n")
             print("The existing section contained an appropriate entry for Worcester")
 
             # didnt fail, so we're good
             temp_json_opening.close()
+            return "good"
         except Exception as e:
             # something is missing, inform client
             return "error"
@@ -86,7 +87,8 @@ class channel_db_handler:
         self.json_db.close()
 
 
-    def find_id_in_db(self, db, ID_to_find):
+    #return indices
+    def find_entry_by_id(self, db, ID_to_find):
         if(db != "existing" and db != "proposed"):
             return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
 
@@ -158,7 +160,22 @@ class channel_db_handler:
         #if we get here, the combo does not exist in the given data
         print("city/state combo not found")
         return -1
-  
+    
+    #returns an id
+    def find_id_by_index(self, db, index):
+        if(db != "existing" and db != "proposed"):
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return -1
+
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        #determine the data to index
+        data_to_search = json_content[db]
+        
+        #get the id from the given index and database
+        return data_to_search[index][0]
 
     #CHANNEL HANDLING
 
@@ -217,7 +234,7 @@ class channel_db_handler:
         json_content = json.load(json_file)
 
         #determine which entry to edit
-        id_index = self.find_id_in_db(self, db, ID)
+        id_index = self.find_entry_by_id(self, db, ID)
         if(id_index == -1):
             return "failure", f"failed to find the provided id {id} in the specified database {db}"
 
@@ -251,7 +268,7 @@ class channel_db_handler:
         json_content = json.load(json_file)
 
         json_DB = json_content[db]
-        index_to_remove = self.find_id_in_db(self, db, ID)
+        index_to_remove = self.find_entry_by_id(self, db, ID)
         if(index_to_remove == -1):
             return "failure", f"failed to find the provided id {id} in the specified database {db}"
 
