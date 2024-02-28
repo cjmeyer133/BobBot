@@ -303,11 +303,11 @@ async def on_raw_reaction_add(reaction):
                 print('Role added')
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
-    citychannelID = 1202356899773685770
-    if reaction.channel_id == citychannelID:
-        on_a_proposal_post = db_handler.find_id_in_db("proposed", reaction.message_id)[0]
+    proposalchannelID = 1202356899773685770
+    if reaction.channel_id == proposalchannelID:
+        on_a_proposal_post = db_handler.find_entry_by_id("proposed", reaction.message_id)
         if on_a_proposal_post != "error" and on_a_proposal_post != -1:
-            id_of_proposal_post = on_a_proposal_post
+            id_of_proposal_post = db_handler.find_id_by_index("proposed", on_a_proposal_post)
             print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
             message = await client.get_channel(reaction.channel_id).fetch_message(reaction.message_id) #I think this line is weird
             thumbs_up_count = 0
@@ -316,6 +316,12 @@ async def on_raw_reaction_add(reaction):
                     thumbs_up_count = reaction.count
             if thumbs_up_count > 1:
                 print("Make new channel here!")
+                newChannelID = -1
+                city = db_handler.find_city_by_index("proposed", id_of_proposal_post)
+                abbr = db_handler.find_state_by_index("proposed", id_of_proposal_post)
+                
+                db_handler.create_new_entry("existing", newChannelID, city, abbr)
+                db_handler.remove_entry("proposed", id_of_proposal_post)
                 #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
 
     #check the city channels' threaded posts for thanks (the thumbs up)

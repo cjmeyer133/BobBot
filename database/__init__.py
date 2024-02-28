@@ -176,7 +176,39 @@ class channel_db_handler:
         
         #get the id from the given index and database
         return data_to_search[index][0]
+    
+    #returns a city
+    def find_city_by_index(self, db, index):
+        if(db != "existing" and db != "proposed"):
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return -1
 
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        #determine the data to index
+        data_to_search = json_content[db]
+        
+        #get the city from the given index and database
+        return data_to_search[index][1]
+    
+    #retuns a state or region abbreviation
+    def find_state_by_index(self, db, index):
+        if(db != "existing" and db != "proposed"):
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return -1
+
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        #determine the data to index
+        data_to_search = json_content[db]
+        
+        #get the state from the given index and database
+        return data_to_search[index][2]
+    
     #CHANNEL HANDLING
 
     #
