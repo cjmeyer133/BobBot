@@ -310,19 +310,24 @@ async def on_raw_reaction_add(reaction):
             id_of_proposal_post = db_handler.find_id_by_index("proposed", on_a_proposal_post)
             print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
             message = await client.get_channel(reaction.channel_id).fetch_message(reaction.message_id) #I think this line is weird
+            
             thumbs_up_count = 0
             for reaction in message.reactions:
                 if str(reaction.emoji) == voteEmoji:
                     thumbs_up_count = reaction.count
             if thumbs_up_count > 1:
                 print("Make new channel here!")
-                newChannelID = -1
+                #grab the city and state/region from the database
                 city = db_handler.find_city_by_index("proposed", id_of_proposal_post)
                 abbr = db_handler.find_state_by_index("proposed", id_of_proposal_post)
-                
+
+                #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
+                newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")
+                newChannelID = -1
+
+                #update the databases appropriately
                 db_handler.create_new_entry("existing", newChannelID, city, abbr)
                 db_handler.remove_entry("proposed", id_of_proposal_post)
-                #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
 
     #check the city channels' threaded posts for thanks (the thumbs up)
 
