@@ -39,6 +39,9 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # GLOBAL VARS #
 ###############
 
+voteEmoji = "<:ThumbsUpIcon:1209267015458627746>"
+thanksEmoji = "<:ThumbsUpIcon:1209267015458627746>"
+
 stateRegionNamesAndAbbrevs = {
 "Alabama" : "AL",
 "Alaska" : "AK",
@@ -168,7 +171,7 @@ stateReactionRoleData = {
 # "Kansas": "KS",
 # "Kentucky": "KY",
 "AK" : ["1202725827436085278", "<:server1:1212191653767684096>", "1211798235652423710"], #1st 1 
-"AL" : [1202725789037109290, "<:server0:1212191652215660554>", "1211798235652423710"], #1st 0 
+"AL" : ["1202725789037109290", "<:server0:1212191652215660554>", "1211798235652423710"], #1st 0 
 "AR" : ["1202725897405210775", "<:server4:1212191659836706837>", "1211798235652423710"], #1st 4 
 "AS" : ["1207796958794879100", "<:server2:1212191656191721512>", "1211798235652423710"], #1st 2 
 "AZ" : ["1202725869525672010", "<:server3:1212191657542553660>", "1211798235652423710"], #1st 3 
@@ -302,12 +305,20 @@ async def on_raw_reaction_add(reaction):
                 print('Role added')
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
-    # channelID = 1202356899773685770
-    # if reaction.channel_id == channelID:
-    #     on_a_proposal_post = db_handler.find_id_in_db("proposed", reaction.message_id)[0]
-    #     if on_a_proposal_post != "error" and on_a_proposal_post != -1:
-    #         print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
-            #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
+    citychannelID = 1202356899773685770
+    if reaction.channel_id == citychannelID:
+        on_a_proposal_post = db_handler.find_id_in_db("proposed", reaction.message_id)[0]
+        if on_a_proposal_post != "error" and on_a_proposal_post != -1:
+            id_of_proposal_post = on_a_proposal_post
+            print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
+            message = await client.get_channel(reaction.channel_id).fetch_message(reaction.message_id) #I think this line is weird
+            thumbs_up_count = 0
+            for reaction in message.reactions:
+                if str(reaction.emoji) == voteEmoji:
+                    thumbs_up_count = reaction.count
+            if thumbs_up_count > 1:
+                print("Make new channel here!")
+                #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
 
     #check the city channels' threaded posts for thanks (the thumbs up)
 
