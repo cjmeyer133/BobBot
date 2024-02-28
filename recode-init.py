@@ -606,6 +606,32 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
 
 #          return "success", "success"
 
+#async def check_inventory(self, user, channel, username, user_pfp):
+         # load json
+#         json_file = open(self.pathToJson, "r")
+#         json_content = json.load(json_file)
+
+#         user_index, new_data = self.find_index_in_db(json_content["userdata"], user)
+#         user_content = json_content["userdata"][user_index]
+
+#         items = user_content["items"]
+#         if items == "none":
+#             inventory_checkup = "**Inventory empty. No items owned.**"
+#         else:
+#             inventory_checkup = ""
+#             for i in range(len(items)):
+#                 inventory_checkup += f"Item: `{items[i][0]}`; amount: `{items[i][1]}`\n"
+
+#         color = self.discord_blue_rgb_code
+#         embed = discord.Embed(title="Owned Items", description=f"{inventory_checkup}", color=color)
+#         embed.set_author(name=username, icon_url=user_pfp)
+#         embed.set_footer(text="nice")
+#         await channel.send(embed=embed)
+
+         # overwrite, end
+         # not needed
+
+#         return "success", "success"
 
 #############
 # START BOT #
