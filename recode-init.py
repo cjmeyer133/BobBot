@@ -283,10 +283,13 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(reaction):
-    channelID = 1202360433768677396
     guild=discord.Object(id=1200191417457324069)
+    
     emoji=str(reaction.emoji)
+    print(reaction)
     print(reaction.emoji)
+    #check the #claim-roles channel's posts for numbers
+    channelID = 1202360433768677396
     if reaction.channel_id == channelID:
         for i in stateReactionRoleData:
             state_react=stateReactionRoleData[i]
@@ -298,6 +301,15 @@ async def on_raw_reaction_add(reaction):
                 the_role.init(role_use, state_name, int(state_react[0]))
                 await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
                 print('Role added')
+
+    #check the #city-proposal channel's posts for votes (the thumbs up)
+    channelID = 1202356899773685770
+    if reaction.channel_id == channelID:
+        on_a_proposal_post = db_handler.find_id_in_db("proposed", reaction.message_id)[0]
+        if on_a_proposal_post != "error" and on_a_proposal_post != -1:
+            print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
+
+    #check the city channels' threaded posts for thanks (the thumbs up)
 
 @client.event
 async def on_raw_reaction_remove(reaction):
