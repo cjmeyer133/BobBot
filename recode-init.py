@@ -285,15 +285,13 @@ async def on_ready():
 async def on_raw_reaction_add(reaction):
     guild=discord.Object(id=1200191417457324069) 
     emoji=str(reaction.emoji)
-    print(reaction)
-    print(emoji)
+    postID=str(reaction.message_id)
     #check the #claim-roles channel's posts for numbers
     channelID = 1202360433768677396
     if reaction.channel_id == channelID:
         for i in stateReactionRoleData:
             state_react=stateReactionRoleData[i]
-            
-            if emoji == state_react[1]:
+            if emoji == state_react[1] and postID == state_react[2]:
            # add_roles(*roles, reason=None, atomic=True)
                 state_name=state_names[state_abbr.index(i)]
                 role_use=the_role()
@@ -317,11 +315,12 @@ async def on_raw_reaction_remove(reaction):
     the_member=the_guild.get_member(reaction.user_id)
     guild=discord.Object(id=1200191417457324069)
     emoji=str(reaction.emoji)
+    postID=str(reaction.message_id)
     print(reaction.emoji)
     if reaction.channel_id == channelID:
         for i in stateReactionRoleData:
             state_react=stateReactionRoleData[i]
-            if emoji == state_react[1]:
+            if emoji == state_react[1] and postID == state_react[2]:
            # add_roles(*roles, reason=None, atomic=True)
                 state_name=state_names[state_abbr.index(i)]
                 role_use=the_role()
