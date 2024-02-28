@@ -308,6 +308,7 @@ async def on_raw_reaction_add(reaction):
         on_a_proposal_post = db_handler.find_id_in_db("proposed", reaction.message_id)[0]
         if on_a_proposal_post != "error" and on_a_proposal_post != -1:
             print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
+            #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
 
     #check the city channels' threaded posts for thanks (the thumbs up)
 
@@ -367,6 +368,7 @@ async def create_item(interaction, itemname: str, cost: int):
     guild=discord.Object(id=1200191417457324069)
 )
 async def suggest_channel(interaction, city :str, state_or_region :str):
+    city = city.strip() #remove any white space at the beginning or end of the city name
     # Check if the stateOrRegionAbbr is valid
     if state_or_region in stateRegionNamesAndAbbrevs:
         state_or_region = stateRegionNamesAndAbbrevs.get(state_or_region)
@@ -474,7 +476,6 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
 #          self.overwrite_json(json_content)
 
 #          return "success", "success"
-
 
 # #Function to buy items
 # @the_tree.command(
