@@ -28,10 +28,10 @@ class channel_db_handler:
             # adding default json config into the file if creating new
             # most entries into existing and proposed will get created in the function self.create_new_entry()
             creating_file.write("""{\n\t"existing":  [
-                    {"channel_ID":"1200192781004582962","city":"Worcester","state_abbr":"MA"}
+                    {"channel_ID":1200192781004582962,"city":"Worcester","state_abbr":"MA"}
                 ], 
     		"proposed": [
-        			{}				
+        							
 			]
         	\n}""")
             creating_file.close()
@@ -112,7 +112,8 @@ class channel_db_handler:
             
     def find_city_state_in_db(self, db, city, state_abbr):
         if(db != "existing" and db != "proposed"):
-            return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return -1
 
         # load json
         json_file = open(self.pathToJson, "r")
@@ -121,19 +122,22 @@ class channel_db_handler:
         #determine the data to loop over
         data_to_search = json_content[db]
         print(data_to_search)
+        print(len(data_to_search))
+
         
         for i in range(len(data_to_search)):
             if (data_to_search[i]["city"] == city and data_to_search[i]["state_abbr"] == state_abbr):
                 print("\nfound entry\n")
-                return int(i), "none"
+                return int(i)
           
         #if we get here, the combo does not exist in the given data
-        return -1, "city/state combo not found"
+        print("city/state combo not found")
+        return -1
     
     def find_id_by_city_state(self, db, city, state_abbr):
         if(db != "existing" and db != "proposed"):
             print("Provide a database name that exists, either \"existing\" or \"proposed\"")
-            return "error", "Provide a database name that exists, either \"existing\" or \"proposed\""
+            return -1
 
         # load json
         json_file = open(self.pathToJson, "r")
@@ -147,13 +151,13 @@ class channel_db_handler:
             if (data_to_search[i]["city"] == city and data_to_search[i]["state_abbr"] == state_abbr):
                 print("\nfound entry\n")
                 if(db == "existing"):
-                    return data_to_search[i]["channel_ID"], "none"
+                    return data_to_search[i]["channel_ID"]
                 if(db == "proposed"):
-                    return data_to_search[i]["post_ID"], "none"
+                    return data_to_search[i]["post_ID"]
           
         #if we get here, the combo does not exist in the given data
         print("city/state combo not found")
-        return -1, "city/state combo not found"
+        return -1
   
 
     #CHANNEL HANDLING

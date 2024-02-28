@@ -22,6 +22,7 @@ from discord.utils import get
 
 # custom database handler
 import database
+import database.__init__
 from time import sleep
 
 from keep import alive
@@ -167,7 +168,7 @@ stateReactionRoleData = {
 # "Kansas": "KS",
 # "Kentucky": "KY",
 "AK" : ["1202725827436085278", "<:server1:1212059088586805258>", "1211798235652423710"], #1st 1 
-"AL" : [1202725789037109290, "<:server0:1212059040675397712>", "1211798235652423710"], #1st 0 
+"AL" : ["1202725789037109290", "<:server0:1212191652215660554>", "1211798235652423710"], #1st 0 
 "AR" : ["1202725897405210775", "<:server4:1212059094714687528>", "1211798235652423710"], #1st 4 
 "AS" : ["1207796958794879100", "<:server2:1212059090935750677>", "1211798235652423710"], #1st 2 
 "AZ" : ["1202725869525672010", "<:server3:1212059093481562233>", "1211798235652423710"], #1st 3 
@@ -232,10 +233,6 @@ class the_role():
         self.id=id
 
 
-#CREATE ME
-#suggestionPosts = A table, loaded from database.json, with the following fields: postID (string, id, unique, not null), city (string, not null), stateOrRegion (string, key of [validStatesRegionsAndRoles], not null). Contains one entry for every city/state combo that has been suggested, but not approved.
-#existingChannels = A table, loaded from database.json, with the following fields: channelID (string, id, unique, not null), city (string, not null), stateOrRegion (string, key of [validStatesRegionsAndRoles], not null). Contains one entry for every city/state combo that has been approved.
-
 ########################
 # INTENTS/CLIENT SETUP #
 ########################
@@ -265,7 +262,7 @@ dClient = discord.Client(intents=discord.Intents.default())
 #making it easier to call the tree to add functions
 the_tree = client.tree
 
-db_handler = database.channel_db_handler(bot)  # ("database.json")
+db_handler = database.__init__.channel_db_handler(bot)  # ("database.json")
 ##########################
 # ASYNCHRONOUS FUNCTIONS #
 ###########################
@@ -405,19 +402,20 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         return
 
 
-    index_in_existing = await db_handler.find_city_state_in_db("existing", city, state_or_region)
-    print(index_in_existing[0] +" is where the city/state combo is in existing")
+    index_in_existing = db_handler.find_city_state_in_db("existing", city, state_or_region)
+    print(f"{index_in_existing} is where the city/state combo is in existing")
     # Check if the city/state combo already exists
-    if int(index_in_existing[0]) != -1:
-        await interaction.send("This city/state combo already has a channel. Here's a link to join it: ")
+    if int(index_in_existing) != -1:
+        channel_link = db_handler.find_id_by_city_state("existing", city, state_or_region)
+        await interaction.response.send_message(f"This city/state combo already has a channel. Here's a link to it: https://discord.com/channels/1200191417457324069/{channel_link}\nTo join it, be sure you've signed up for the {state_or_region} role by reacting with a {stateReactionRoleData.get(city)[1]} here https://discord.com/channels/1200191417457324069/1202360433768677396/{stateReactionRoleData.get(city)[2]}")
         return
 
-    index_in_proposed = await db_handler.find_city_state_in_db("proposed", city, state_or_region)
-    print(index_in_existing[0] +" is where the city/state combo is in proposed")
+    index_in_proposed = db_handler.find_city_state_in_db("proposed", city, state_or_region)
+    print(f"{index_in_existing} is where the city/state combo is in proposed")
     # Check if the city/state combo was already suggested
-    if int(index_in_proposed[0]) != -1:
-        suggestion_post_link = database.find_id_by_city_state(city, state_or_region)
-        await interaction.send(f"This city/state combo was already suggested. Here's the link: https://discord.com/channels/1200191417457324069/1202356899773685770/{suggestion_post_link}")
+    if int(index_in_proposed) != -1:
+        suggestion_post_link = db_handler.find_id_by_city_state("proposed", city, state_or_region)
+        await interaction.response.send_message(f"This city/state combo was already suggested. Here's the link: https://discord.com/channels/1200191417457324069/1202356899773685770/{suggestion_post_link}")
         return
 
     #Make a post in the #city-proposal channel
@@ -431,7 +429,7 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         embed.description = f"Your suggestion is now available to be voted on! See the poll at https://discord.com/channels/1200191417457324069/1202356899773685770/{post.id} ."
 
         # Add the post ID (post.id) to the suggestionPosts part of the database
-        #database.add_suggestion(city, stateOrRegionAbbr, suggestion_post.id)
+        await db_handler.create_new_entry("proposed", post.id, city, state_or_region)
         await interaction.response.send_message(embed=embed)
     else:
 
