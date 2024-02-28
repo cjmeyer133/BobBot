@@ -176,52 +176,52 @@ stateReactionRoleData = {
 "CT" : ["1202726031786774528", "<:server7:1212059098967969833>", "1211798235652423710"], #1st 7 
 "DC" : ["1202728841504751687", "<:server9:1212059101320716358>", "1211798235652423710"], #1st 9 
 "DE" : ["1202726227648192522", "<:server8:1212059099835924520>", "1211798235652423710"], #1st 8 
-"FL" : ["1202726289476423741", ":regional_indicator_F:", "1202731356036005968"], #2nd 0 #"southern"
-"GA" : ["1202726426537889843", ":regional_indicator_G:", "1202731356036005968"], #2nd 1 #"southern"
-"GU" : ["1207797567627333632", ":regional_indicator_G:", "1203053376594772069"], #2nd 2 #"territories"
-"HI" : ["1202726446569623593", ":regional_indicator_H:", "1202725835941871688"], #2nd 3 #"western"
-"IA" : ["1202726553302081577", ":regional_indicator_A:", "1202725518890246217"], #2nd 7 #"midwestern"
-"ID" : ["1202726466832437259", ":regional_indicator_I:", "1202725835941871688"], #2nd 4 #"western"
-"IL" : ["1202726490593034292", ":regional_indicator_L:", "1202725518890246217"], #2nd 5 #"midwestern"
-"IN" : ["1202726525405896754", ":regional_indicator_I:", "1202725518890246217"], #2nd 6 #"midwestern"
-"KS" : ["1202726623389024404", ":regional_indicator_K:", "1202725518890246217"], #2nd 8 #"midwestern"
-"KY" : ["1202726679185723422", ":regional_indicator_K:", "1202732644865941636"], #2nd 9 #"eastern"
-"LA" : ["1202726758160404560", ":regional_indicator_L:", "1202731356036005968"], #3rd 0 #"southern"
-"MA" : ["1202725605729116201", ":regional_indicator_M:", "1202721704774996079"], #3rd 3 #"north-eastern"
-"MD" : ["1202726803639369768", ":regional_indicator_M:", "1202732644865941636"], #3rd 2 #"eastern"
-"ME" : ["1202726787784769546", ":regional_indicator_N:", "1202721704774996079"], #3rd 1 #"north-eastern"
-"MI" : ["1202726856533614624", ":regional_indicator_M:", "1202725518890246217"], #3rd 4 #"midwestern"
-"MN" : ["1202727443723591760", ":regional_indicator_T:", "1202721704774996079"], #3rd 5 #"north-eastern"
-"MO" : ["1202727443723591760", ":regional_indicator_R:", "1202725518890246217"], #3rd 7 #"midwestern"
-"MP" : ["1208110392761389177", ":regional_indicator_M:", "1203053376594772069"], #4th 7 #"territories"
-"MS" : ["1202727521188315137", ":regional_indicator_M:", "1202731356036005968"], #3rd 6 #"southern"
-"MT" : ["1202727107982139473", ":regional_indicator_M:", "1202725835941871688"], #3rd 8 #"western"
-"NC" : ["1202727886948278353", ":regional_indicator_N:", "1202732644865941636"], #4th 5 #"eastern"
-"ND" : ["1202727951356002376", ":regional_indicator_N:", "1202725518890246217"], #4th 6 #"midwestern"
-"NE" : ["1202727580688711760", ":regional_indicator_B:", "1202725518890246217"], #3rd 9 #"midwestern"
-"NH" : ["1202727765015527445", ":regional_indicator_H:", "1202721704774996079"], #4th 1 #"north-eastern"
-"NJ" : ["1202727809555107890", ":regional_indicator_J:", "1202721704774996079"], #4th 2 #"north-eastern"
-"NM" : ["1202727834427064320", ":regional_indicator_N:", "1202731356036005968"], #4th 3 #"southern"
-"NV" : ["1202727744325287957", ":regional_indicator_N:", "1202725835941871688"], #4th 0 #"western"
-"NY" : ["1202727859878240296", ":regional_indicator_Y:", "1202721704774996079"], #4th 4 #"north-eastern"
-"OH" : ["1202727977478262834", ":regional_indicator_O:", "1202725518890246217"], #4th 8 #"midwestern"
-"OK" : ["1202728113721577562", ":regional_indicator_O:", "1202731356036005968"], #4th 9 #"southern"
-"OR" : ["1202728134642901022", ":regional_indicator_O:", "1202725835941871688"], #5th 0 #"western"
-"PA" : ["1202728166456565831", ":regional_indicator_P:", "1202721704774996079"], #5th 1 #"north-eastern"
-"PR" : ["1208111221300002836", ":regional_indicator_P:", "1203053376594772069"], #5th 2 #"territories"
-"RI" : ["1202728206701166592", ":regional_indicator_R:", "1202721704774996079"], #5th 3 #"north-eastern"
-"SC" : ["1202728254990061648", ":regional_indicator_S:", "1202732644865941636"], #5th 4 #"eastern"
-"SD" : ["1202728300565368853", ":regional_indicator_S:", "1202725518890246217"], #5th 5 #"midwestern"
-"TN" : ["1202728540987199518", ":regional_indicator_T:", "1202732644865941636"], #5th 6 #"eastern" 
-"TX" : ["1202728587002650624", ":regional_indicator_T:", "1202731356036005968"], #5th 7 #"southern"
-"UT" : ["1202728725226193036", ":regional_indicator_U:", "1202725835941871688"], #5th 8 #"western"
-"VA" : ["1202728774672842843", ":regional_indicator_V:", "1202732644865941636"], #6th 0 #"eastern" 
-"VI" : ["1208112579235283014", ":regional_indicator_V:", "1203053376594772069"], #6th 1 #"territories"
-"VT" : ["1202728746663018576", ":regional_indicator_V:", "1202721704774996079"], #5th 9 #"north-eastern"
-"WA" : ["1202728794343997481", ":regional_indicator_W:", "1202725835941871688"], #6th 2 #"western" 
-"WI" : ["1202728976733184030", ":regional_indicator_W:", "1202725518890246217"], #6th 4 #"midwestern"
-"WV" : ["1202728921825677383", ":regional_indicator_W:", "1202732644865941636"], #6th 3 #"eastern"
-"WY" : ["1202729013252984892", ":regional_indicator_Y:", "1202725835941871688"]  #6th 5 #"western"
+"FL" : ["1202726289476423741", "<:server0:1212059040675397712>", "1211799377723654164"], #2nd 0
+"GA" : ["1202726426537889843", "<:server1:1212059088586805258>", "1211799377723654164"], #2nd 1
+"GU" : ["1207797567627333632", "<:server2:1212059090935750677>", "1211799377723654164"], #2nd 2 
+"HI" : ["1202726446569623593", "<:server3:1212059093481562233>", "1211799377723654164"], #2nd 3
+"IA" : ["1202726553302081577", "<:server7:1212059098967969833>", "1211799377723654164"], #2nd 7
+"ID" : ["1202726466832437259", "<:server4:1212059094714687528>", "1211799377723654164"], #2nd 4
+"IL" : ["1202726490593034292", "<:server5:1212059096476286986>", "1211799377723654164"], #2nd 5
+"IN" : ["1202726525405896754", "<:server6:1212059098091233300>", "1211799377723654164"], #2nd 6
+"KS" : ["1202726623389024404", "<:server8:1212059099835924520>", "1211799377723654164"], #2nd 8
+"KY" : ["1202726679185723422", "<:server9:1212059101320716358>", "1211799377723654164"], #2nd 9 
+"LA" : ["1202726758160404560", "<:server0:1212059040675397712>", "1211800515856433215"], #3rd 0 
+"MA" : ["1202725605729116201", "<:server3:1212059093481562233>", "1211800515856433215"], #3rd 3 
+"MD" : ["1202726803639369768", "<:server2:1212059090935750677>", "1211800515856433215"], #3rd 2 
+"ME" : ["1202726787784769546", "<:server1:1212059088586805258>", "1211800515856433215"], #3rd 1 
+"MI" : ["1202726856533614624", "<:server4:1212059094714687528>", "1211800515856433215"], #3rd 4 
+"MN" : ["1202727443723591760", "<:server5:1212059096476286986>", "1211800515856433215"], #3rd 5 
+"MO" : ["1202727443723591760", "<:server7:1212059098967969833>", "1211800515856433215"], #3rd 7 
+"MP" : ["1208110392761389177", "<:server7:1212059098967969833>", "1211800848427126834"], #4th 7 
+"MS" : ["1202727521188315137", "<:server6:1212059098091233300>", "1211800515856433215"], #3rd 6 
+"MT" : ["1202727107982139473", "<:server8:1212059099835924520>", "1211800515856433215"], #3rd 8 
+"NC" : ["1202727886948278353", "<:server5:1212059096476286986>", "1211800848427126834"], #4th 5 
+"ND" : ["1202727951356002376", "<:server6:1212059098091233300>", "1211800848427126834"], #4th 6 
+"NE" : ["1202727580688711760", "<:server9:1212059101320716358>", "1211800515856433215"], #3rd 9 
+"NH" : ["1202727765015527445", "<:server1:1212059088586805258>", "1211800848427126834"], #4th 1 
+"NJ" : ["1202727809555107890", "<:server2:1212059090935750677>", "1211800848427126834"], #4th 2 
+"NM" : ["1202727834427064320", "<:server3:1212059093481562233>", "1211800848427126834"], #4th 3 
+"NV" : ["1202727744325287957", "<:server0:1212059040675397712>", "1211800848427126834"], #4th 0 
+"NY" : ["1202727859878240296", "<:server4:1212059094714687528>", "1211800848427126834"], #4th 4 
+"OH" : ["1202727977478262834", "<:server8:1212059099835924520>", "1211800848427126834"], #4th 8 
+"OK" : ["1202728113721577562", "<:server9:1212059101320716358>", "1211800848427126834"], #4th 9 
+"OR" : ["1202728134642901022", "<:server0:1212059040675397712>", "1211802177077649470"], #5th 0 
+"PA" : ["1202728166456565831", "<:server1:1212059088586805258>", "1211802177077649470"], #5th 1 
+"PR" : ["1208111221300002836", "<:server2:1212059090935750677>", "1211802177077649470"], #5th 2 
+"RI" : ["1202728206701166592", "<:server3:1212059093481562233>", "1211802177077649470"], #5th 3 
+"SC" : ["1202728254990061648", "<:server4:1212059094714687528>", "1211802177077649470"], #5th 4 
+"SD" : ["1202728300565368853", "<:server5:1212059096476286986>", "1211802177077649470"], #5th 5 
+"TN" : ["1202728540987199518", "<:server6:1212059098091233300>", "1211802177077649470"], #5th 6  
+"TX" : ["1202728587002650624", "<:server7:1212059098967969833>", "1211802177077649470"], #5th 7 
+"UT" : ["1202728725226193036", "<:server8:1212059099835924520>", "1211802177077649470"], #5th 8 
+"VA" : ["1202728774672842843", "<:server0:1212059040675397712>", "1211802403314077776"], #6th 0  
+"VI" : ["1208112579235283014", "<:server1:1212059088586805258>", "1211802403314077776"], #6th 1 
+"VT" : ["1202728746663018576", "<:server9:1212059101320716358>", "1211802177077649470"], #5th 9 
+"WA" : ["1202728794343997481", "<:server2:1212059090935750677>", "1211802403314077776"], #6th 2  
+"WI" : ["1202728976733184030", "<:server4:1212059094714687528>", "1211802403314077776"], #6th 4 
+"WV" : ["1202728921825677383", "<:server3:1212059093481562233>", "1211802403314077776"], #6th 3 
+"WY" : ["1202729013252984892", "<:server5:1212059096476286986>", "1211802403314077776"]  #6th 5 
 }
 state_names= list(stateRegionNamesAndAbbrevs.keys())
 state_abbr= list(stateRegionNamesAndAbbrevs.values())
@@ -321,64 +321,6 @@ async def on_raw_reaction_remove(reaction):
                 await the_member.remove_roles(role_use, reason="reaction", atomic=True)
                 print('Role removed') 
 
-#function to add money to a user
-async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
-         # load json
-         json_file = open(self.pathToJson, "r")
-         json_content = json.load(json_file)
-         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
-
-         if new_data != "none":
-             json_content["userdata"] = new_data
-
-         json_recept_content = json_content["userdata"][reception_user_index]
-
-         json_recept_content["cash"] += int(amount)
-
-         # inform user
-         color = self.discord_success_rgb_code
-         embed = discord.Embed(
-         description=f"✅  Added {str(self.currency_symbol)} {'{:,}'.format(int(amount))} to <@{recept_uname.id}>'s cash balance",
-             color=color)
-         embed.set_author(name=username, icon_url=user_pfp)
-         await channel.send(embed=embed)
-
-         # overwrite, end
-         json_content["userdata"][reception_user_index] = json_recept_content
-         self.overwrite_json(json_content)
-
-         return "success", "success"
-
-#Function to remove money from a user
-async def remove_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
-         # load json
-         json_file = open(self.pathToJson, "r")
-         json_content = json.load(json_file)
-         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
-
-         if new_data != "none":
-             json_content["userdata"] = new_data
-
-         json_recept_content = json_content["userdata"][reception_user_index]
-
-         json_recept_content["cash"] -= int(amount)
-
-         # inform user
-         color = self.discord_success_rgb_code
-         embed = discord.Embed(
-             description=f"✅  Removed {str(self.currency_symbol)} {'{:,}'.format(int(amount))} from <@{recept_uname.id}>'s cash balance",
-             color=color)
-         embed.set_author(name=username, icon_url=user_pfp)
-         await channel.send(embed=embed)
-
-         # overwrite, end
-         json_content["userdata"][reception_user_index] = json_recept_content
-         self.overwrite_json(json_content)
-
-         return "success", "success"
-
-
-
 #######################
 # ON DEMAND FUNCTIONS #
 #######################
@@ -457,7 +399,80 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
 
+#function to add money to a user
+@the_tree.command(
+    name='add-money',
+    description="Give money to a user", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def add_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
+
+         if new_data != "none":
+             json_content["userdata"] = new_data
+
+         json_recept_content = json_content["userdata"][reception_user_index]
+
+         json_recept_content["cash"] += int(amount)
+
+         # inform user
+         color = self.discord_success_rgb_code
+         embed = discord.Embed(
+         description=f"✅  Added {str(self.currency_symbol)} {'{:,}'.format(int(amount))} to <@{recept_uname.id}>'s cash balance",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][reception_user_index] = json_recept_content
+         self.overwrite_json(json_content)
+
+         return "success", "success"
+
+
+@the_tree.command(
+    name='remove-money',
+    description="Remove money from a user", 
+    guild=discord.Object(id=1200191417457324069)
+)
+#Function to remove money from a user
+async def remove_money(self, user, channel, username, user_pfp, reception_user, amount, recept_uname):
+         # load json
+         json_file = open(self.pathToJson, "r")
+         json_content = json.load(json_file)
+         reception_user_index, new_data = self.find_index_in_db(json_content["userdata"], reception_user)
+
+         if new_data != "none":
+             json_content["userdata"] = new_data
+
+         json_recept_content = json_content["userdata"][reception_user_index]
+
+         json_recept_content["cash"] -= int(amount)
+
+         # inform user
+         color = self.discord_success_rgb_code
+         embed = discord.Embed(
+             description=f"✅  Removed {str(self.currency_symbol)} {'{:,}'.format(int(amount))} from <@{recept_uname.id}>'s cash balance",
+             color=color)
+         embed.set_author(name=username, icon_url=user_pfp)
+         await channel.send(embed=embed)
+
+         # overwrite, end
+         json_content["userdata"][reception_user_index] = json_recept_content
+         self.overwrite_json(json_content)
+
+         return "success", "success"
+
+
 #Function to buy items
+@the_tree.command(
+    name='buy-item',
+    description="Buy an item with your money", 
+    guild=discord.Object(id=1200191417457324069)
+)
 async def buy_item(self, user, channel, username, user_pfp, item_name, amount, user_roles, server_object,
                         user_object):
          # load json
