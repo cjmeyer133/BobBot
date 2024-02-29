@@ -308,9 +308,7 @@ async def on_raw_reaction_add(reaction):
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
     proposalchannelID = 1202356899773685770
-    for_guild_var=the_guild.get_channel(1200192781004582962)
-    for_cat_channel=for_guild_var.category
-    cat_channel=for_cat_channel.category
+    cat_channel=the_guild.get_channel(1200192781004582962).category
     if reaction.channel_id == proposalchannelID:
         
         on_a_proposal_post = db_handler.find_entry_by_id("proposed", reaction.message_id)
@@ -340,8 +338,8 @@ async def on_raw_reaction_add(reaction):
                 channel = await the_guild.create_text_channel(newChannelName, category=cat_channel)
 
                 #update the database appropriately
-                db_handler.create_new_entry("existing", channel.id, city, abbr)
-                db_handler.remove_entry("proposed", id_of_proposal_post)
+                await db_handler.create_new_entry("existing", channel.id, city, abbr)
+                await db_handler.remove_entry("proposed", id_of_proposal_post)
 
     #check the city channels' threaded posts for thanks (the thumbs up)
 

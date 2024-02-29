@@ -4,6 +4,11 @@
             "channel_ID": 1200192781004582962,
             "city": "Worcester",
             "state_abbr": "MA"
+        },
+        {
+            "channel_ID": 1212598142927634473,
+            "city": "Toms River",
+            "state_abbr": "NJ"
         }
     ],
     "proposed": [
