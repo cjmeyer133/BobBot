@@ -334,12 +334,24 @@ async def on_raw_reaction_add(reaction):
                 abbr = db_handler.find_state_by_index("proposed", on_a_proposal_post[0])
 
                 #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
-                newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")            
-                channel = await the_guild.create_text_channel(newChannelName, category=cat_channel)
-
-                #update the database appropriately
-                await db_handler.create_new_entry("existing", channel.id, city, abbr)
-                await db_handler.remove_entry("proposed", id_of_proposal_post)
+                newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")
+                channel_list=the_guild.channels
+                for i in channel_list:
+                    if i.name==newChannelName:
+                        do_not_add=True
+                        break
+                    if i.name != newChannelName:
+                        do_not_add=False
+                        continue
+                if do_not_add == False:
+                    role=validStatesRegionsAndRoles.get(abbr)
+                    user_role=the_guild.get_role(int(role))
+                    channel=await the_guild.create_text_channel(newChannelName, category=cat_channel)
+                    await channel.set_permissions(the_guild.default_role, read_messages=False)
+                    await channel.set_permissions(user_role, read_messages=True)
+                    #update the database appropriately
+                    await db_handler.create_new_entry("existing", channel.id, city, abbr)
+                    await db_handler.remove_entry("proposed", id_of_proposal_post)
 
     #check the city channels' threaded posts for thanks (the thumbs up)
 

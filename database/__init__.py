@@ -361,12 +361,12 @@ class channel_db_handler:
         json_content = json.load(json_file)
 
         json_DB = json_content[db]
-        index_to_remove = self.find_entry_by_id(self, db, ID)
+        index_to_remove = self.find_entry_by_id(db, ID)
         if(index_to_remove == -1):
             return "failure", f"failed to find the provided id {id} in the specified database {db}"
 
         # delete from the "items" section
-        json_DB.pop(index_to_remove)
+        json_DB.pop(index_to_remove[0])
 
         # overwrite, end
         json_content[db] = json_DB
