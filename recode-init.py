@@ -299,8 +299,21 @@ async def on_raw_reaction_add(reaction):
                 state_name=state_names[state_abbr.index(i)]
                 role_use=the_role()
                 the_role.init(role_use, state_name, int(state_react[0]))
-                await reaction.member.add_roles(role_use, reason="reaction", atomic=True) 
-                print('Role added')
+                await reaction.member.add_roles(role_use, reason="reaction", atomic=True)
+                member=reaction.member
+                print('Role added to '+str(member))
+                break
+    citylist=db_handler.find_city_by_state(i)
+    if citylist == []:
+        citymsg="Thanks! There are no city channels for "+state_name+" yet, but you can propose a city channel in the server using the command /suggest-channel."
+    if citylist != []:
+        citymsg="Thanks! Here are the city channels in "+state_name+": \n"
+        for c in citylist:
+            city_name=c.get("city")
+            city_channel=str(c.get("channel_ID"))
+            citymsg=citymsg+city_name+" can be found at https://discord.com/channels/1200191417457324069/"+city_channel+" .\n"
+    await member.send(citymsg)
+
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
     proposalchannelID = 1202356899773685770
@@ -350,6 +363,11 @@ async def on_raw_reaction_remove(reaction):
                 the_role.init(role_use, state_name, int(state_react[0]))
                 await the_member.remove_roles(role_use, reason="reaction", atomic=True)
                 print('Role removed') 
+
+
+
+
+
 
 #######################
 # ON DEMAND FUNCTIONS #

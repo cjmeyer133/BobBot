@@ -209,6 +209,25 @@ class channel_db_handler:
         #get the state from the given index and database
         return data_to_search[index][2]
     
+    
+    def find_city_by_state(self, state_abbr):
+        
+        #open and load the contents
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+        city_list=[]
+
+        #determine the data to search
+        data_to_search=json_content['existing']
+
+
+        for i in range(len(data_to_search)):
+            if (data_to_search[i]["state_abbr"] == state_abbr):
+                city_list.append(data_to_search[i])
+                print("\nfound entry\n")
+        return city_list
+
+
     #CHANNEL HANDLING
 
     #
