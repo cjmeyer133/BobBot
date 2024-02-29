@@ -360,3 +360,78 @@ class channel_db_handler:
         self.overwrite_json(json_content)
 
         return "success", "success"       
+
+
+class reward_db_handler():
+    def __init__(self, client):
+        # we do the path from the main.py file, so we go into the db folder, then select
+        self.pathToJson = "database/reward_database.json"
+        self.client = client
+        # for the json "variables", dont want to make a whole function to find index for variables
+        # wont be many anyways. so making it manually
+        self.users_entry_dict={
+            "username":0,
+            "coins": 1,
+            "items": 2
+            }
+        # self.existing_entry_dict = {
+        #     "channel_ID": 0,
+        #     "city": 1,
+        #     "state_abbr": 2
+        # }
+        # self.proposed_entry_dict = {
+        #     "post_ID": 0,
+        #     "city": 1,
+        #     "state_abbr": 2
+        # }
+
+        # check if file is created, else create it
+        if not os.path.exists(self.pathToJson):
+            # this "w" overwrites all the (junk) data that was in this file before it was first opened
+            creating_file = open(self.pathToJson, "w") 
+            # adding default json config into the file if creating new
+            # most entries into existing and proposed will get created in the function self.create_new_entry()
+            creating_file.write("""{\n\t"users":  [
+                    {"username": "BobBot", "coins": 999999999, "items": 999999999}
+                ]
+        	\n}""")
+            creating_file.close()
+
+
+    async def check_json(self):
+
+        try:
+            print("Got into the check function")
+            with open(self.pathToJson, "r") as temp_json_opening:
+                temp_json_content = json.load(temp_json_opening)
+            print("Opened the file")
+
+            check_content = temp_json_content
+            # users with coins
+            users = check_content["users"]
+
+            # check if the BobBot
+            botID = users[0]['username']
+            print(f"{botID} is the username for the BobBot entry")
+            botCoins = users[0]['coins']
+            print(f"{botCoins} is the number of coins for the BobBot entry")
+            itemvalue = users[0]['items']
+            print(f"{itemvalue} is the number of items for the BobBot entry")
+            print("BobBot's entry is good to go.")
+            return "good"
+        except FileNotFoundError:
+            print(f"The file {self.pathToJson} could not be found.")
+            return "error"
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            return "error"
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return "error"
+
+    # need to overwrite the whole json when updating
+    def overwrite_json(self, content):
+        self.json_db = open(self.pathToJson, "w")
+        self.clean_json = json.dumps(content, indent=4, separators=(",", ": "))
+        self.json_db.write(self.clean_json)
+        self.json_db.close()
