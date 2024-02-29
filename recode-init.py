@@ -361,7 +361,17 @@ async def on_raw_reaction_add(reaction):
                     await db_handler.remove_entry("proposed", id_of_proposal_post)
 
     #check the city channels' threaded posts for thanks (the thumbs up)
+    if reaction.emoji == thanksEmoji: #(don't do the for loop unless the emoji is the thumbs up)
+        #check every thread until you find the one that the reaction was on (if it was even on a thread)
+        arr_of_all_threads_in_find_by_city = []
+        for threadID in arr_of_all_threads_in_find_by_city:
+            if reaction.channel_id == threadID:
+                print("Awarding OP and helper with points")
+                #op = 
+                #when you find the right thread, find its owner and award them 3 points
+                #also find the poster who was thanked and award them 7 points
 
+        
 @client.event
 async def on_raw_reaction_remove(reaction):
     channelID = 1202360433768677396
@@ -388,6 +398,28 @@ async def on_member_join(member):
     embed=discord.Embed(title="Welcome!",description=f"Welcome to AdderalFinder, {member.mention}!\n\nTo get started, head to https://discord.com/channels/1200191417457324069/1202360433768677396 to claim roles for the U.S. state(s) and/or territory/territories you usually fulfill your prescription in. (Note: since Adderall is not legal in most countries outside the U.S., AdderalFinder caters to inhabitants of the U.S. states and territories.)")
     await channel.send(embed=embed)
 
+@client.event
+async def on_message(message):
+    # Check if the message is from the bot itself
+    if message.author == client.user:
+        print("That message was from me")
+        return
+
+    # Your custom function to run when a user posts a message
+    await use_command_alert(message)
+
+async def use_command_alert(message):
+    print("Got into the alert function")
+    #if the message content contains an indication of milligrams, an indication of ir/xr, and a keyword "where", "find", "help", or "need"
+    text = message.content.lower()
+    ir = ["ir", "immediate release", "immediate"]
+    xr = ["xr", "extended release", "extended"]
+    contains_ir_or_xr = ((text.find(ir[0])>=0 or text.find(ir[1])>=0 or text.find(ir[2])>=0) or (text.find(xr[0])>=0 or text.find(xr[1])>=0 or text.find(xr[2])>=0))
+    contains_keyword = text.find("where")>=0 or text.find("find")>=0 or text.find("help")>=0 or text.find("need")>=0
+    if (text.find("mg") >= 0 or text.find("milligrams") >= 0) and contains_ir_or_xr and contains_keyword:
+            await message.reply("It looks like you might be trying to send a request for Adderall. Try using the command /find-adderall-here. If you aren't trying to send a request for Adderall, you can safely dismiss this message.")
+            return
+    return
 
 #######################
 # ON DEMAND FUNCTIONS #
@@ -404,8 +436,6 @@ async def on_member_join(member):
 )
 async def first_command(interaction):
     await interaction.response.send_message("Hello!")
-
-
 
 
 
@@ -491,18 +521,25 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
             await interaction.response.send_message(content = f"The parameter \'strength\' takes the strength of each capsule/tablet of Adderall in milligrams (mg) according to your prescription. \"{strength}\" was not understandable as a medicine strength. Try entering a number followed by \"mg\" or \"milligrams\".\nPlease try again.", ephemeral = True)
             return
         
-        #post a threaded message in the same channel as the command was sent from for others to respond to
+        #check to ensure the id of the entry in the existing db is valid
         id = db_handler.find_entry_by_id("existing",interaction.channel.id)[0]
         if id < 0 or id == "error":
             print(f"ID should have been a number >= 0, but instead it was {id}")
             await interaction.response.send_message(content = f"Sorry, something went wrong. Try running this command in another channel.", ephemeral = True)
             return
+        
+        #post a threaded message in the same channel as the command was sent from for others to respond to
+        #make the post
         city = db_handler.find_city_by_index("existing", id)
-        print(interaction.user)
         user = interaction.user
         ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
-        threadParent = await interaction.channel.send(f"User {user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
-        threadChannel = await threadParent.create_thread(name=f"{user.global_name.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
+        threadParent = await interaction.channel.send(f"@here User {user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
+        
+        #make the thread
+        threadName = f"{user.global_name.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}"
+        if len(threadName) >= 100: #prevent thread names that are too long
+            threadName = threadName[:100]
+        threadChannel = await threadParent.create_thread(name=threadName)
         await threadChannel.send(f"{interaction.user.mention}, don't forget to react with a <:ThumbsUpIcon:1209267015458627746> to another user who gives you the info to fulfill your request. Then, you can both earn points!")
         await interaction.response.send_message(content = f"Thread successfully created! See it here: https://discord.com/channels/1200191417457324069/{interaction.channel.id}/{threadParent.id}", ephemeral = True)
     else:
