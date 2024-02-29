@@ -47,8 +47,8 @@ class channel_db_handler:
 
         try:
             print("Got into the check function")
-            temp_json_opening = open(self.pathToJson, "r")
-            temp_json_content = json.load(temp_json_opening)
+            with open(self.pathToJson, "r") as temp_json_opening:
+                temp_json_content = json.load(temp_json_opening)
             print("Opened the file")
 
             check_content = temp_json_content
@@ -58,21 +58,25 @@ class channel_db_handler:
             # proposed channels
             proposed = check_content["proposed"]
             print("Both expected main sections of content appeared")
-
+            print(f"existing is {existing}")
             # check if the Worcester entry is there
-            worcID = existing[0]["channel_ID"]
-            print(worcID+" is the channel_ID for the worcester channel\n")
-            worcCity = existing[0]["city"]
-            print(worcCity+" is the city for the worcester channel\n")
-            worcAbbr = existing[0]["state_abbr"]
-            print(worcAbbr+" is the state or region abbreviation for the worcester channel\n")
+            worcID = existing[0]['channel_ID']
+            print(f"{worcID} is the channel_ID for the worcester channel")
+            worcCity = existing[0]['city']
+            print(f"{worcCity} is the city for the worcester channel")
+            worcAbbr = existing[0]['state_abbr']
+            print(f"{worcAbbr} is the state or region abbreviation for the worcester channel")
             print("The existing section contained an appropriate entry for Worcester")
 
-            # didnt fail, so we're good
-            temp_json_opening.close()
             return "good"
+        except FileNotFoundError:
+            print(f"The file {self.pathToJson} could not be found.")
+            return "error"
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            return "error"
         except Exception as e:
-            # something is missing, inform client
+            print(f"An unexpected error occurred: {e}")
             return "error"
 
     """
@@ -136,7 +140,7 @@ class channel_db_handler:
         print("city/state combo not found")
         return -1
     
-    def find_id_by_city_state(self, db, city, state_abbr):
+    def find_all_indices_by_state(self, db, city, state_abbr):
         if(db != "existing" and db != "proposed"):
             print("Provide a database name that exists, either \"existing\" or \"proposed\"")
             return -1
@@ -160,7 +164,7 @@ class channel_db_handler:
         #if we get here, the combo does not exist in the given data
         print("city/state combo not found")
         return -1
-    
+
     #returns an id
     def find_id_by_index(self, db, index):
         if(db != "existing" and db != "proposed"):
@@ -177,6 +181,31 @@ class channel_db_handler:
         #get the id from the given index and database
         return data_to_search[index][0]
     
+    def find_id_by_city_state(self, db, city, state_abbr):
+        if(db != "existing" and db != "proposed"):
+            print("Provide a database name that exists, either \"existing\" or \"proposed\"")
+            return -1
+
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        #determine the data to loop over
+        data_to_search = json_content[db]
+        print(data_to_search)
+        
+        for i in range(len(data_to_search)):
+            if (data_to_search[i]["city"] == city and data_to_search[i]["state_abbr"] == state_abbr):
+                print("\nfound entry\n")
+                if(db == "existing"):
+                    return data_to_search[i]["channel_ID"]
+                if(db == "proposed"):
+                    return data_to_search[i]["post_ID"]
+            
+        #if we get here, the combo does not exist in the given data
+        print("city/state combo not found")
+        return -1
+
     #returns a city
     def find_city_by_index(self, db, index):
         if(db != "existing" and db != "proposed"):
