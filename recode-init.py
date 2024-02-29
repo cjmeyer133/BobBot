@@ -502,7 +502,7 @@ async def mod_money(interaction, username: str, amount: int):
         await interaction.response.send_message(username+"\'s new coint amount is "+str(amount))
     else:
         coin_mod=reward_db_handler.mod_coins(username, amount)
-        await interaction.response.send_message(item_mod[0]+"\'s new coin amount is"+coin_mod[1])
+        await interaction.response.send_message(coin_mod[0]+"\'s new coin amount is"+coin_mod[1])
 
 
 
