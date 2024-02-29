@@ -410,7 +410,7 @@ class reward_db_handler():
         	\n}""")
             creating_file.close()
 
-
+    #verify the file is working correctly
     async def check_json(self):
 
         try:
@@ -449,12 +449,15 @@ class reward_db_handler():
         self.json_db.write(self.clean_json)
         self.json_db.close()
 
+
+
+#add a user to the json file
     async def create_new_entry(self, username, coins, items):
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
-        for i in range(len(json_entries)):
+        for i in range(len(json_content)):
             if  json_content[i]["username"] == username:
                 return "error", "Entry for that channel ID already exists."
             
@@ -466,3 +469,143 @@ class reward_db_handler():
         self.overwrite_json(json_content)
 
         return "success"
+    
+
+
+
+
+
+#find an index using a username
+    def find_index_with_username(self, username):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+   
+        for i in range(len(json_content)):
+            if  json_content[i]["username"] == username:
+                return i
+    
+
+
+
+#find a username using an index
+    def find_username_with_index(self, index):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        username=json_content[index]["username"]
+
+        return username
+   
+
+
+
+#find indices with coin value
+    def find_indices_with_coins(self, coins):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        index_list=[]
+
+        for i in range(len(json_content)):
+            if  json_content[i]["coins"] == coins:
+                index_list.append(i)
+        
+        return index_list
+    
+
+
+#find coins using an index
+    def find_coins_with_index(self, index):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        coins=json_content[index]["coins"]
+
+        return coins
+
+
+
+
+#find indices with coin value
+    def find_indices_with_items(self, items):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        index_list=[]
+
+        for i in range(len(json_content)):
+            if  json_content[i]["items"] == items:
+                index_list.append(i)
+        
+        return index_list
+    
+
+
+#find items using an index
+    def find_items_with_index(self, index):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        items=json_content[index]["items"]
+
+        return items
+
+
+
+#remove a user's entry
+    async def remove_entry(self, username):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        index_to_remove=reward_db_handler.find_index_with_username(username)
+
+        if(index_to_remove == -1):
+            return "failure", f"failed to find the provided id {id} in the specified database {db}"
+
+        # delete entry
+        json_content.pop(json_content[index_to_remove])
+
+        self.overwrite_json(json_content)
+
+        return "success" 
+
+
+
+#modify the number of coins by a positive or negative amount
+    async def mod_coins(self, username: str, mod_amount: int):
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        for i in range(len(json_content)):
+            if  json_content[i]["username"] == username:
+                new_coins=json_content[i]["coins"] + mod_amount
+                json_content[i]["coins"] = new_coins
+
+
+        self.overwrite_json(json_content)
+
+        return username, new_coins
+
+
+#modify the number of itemss by a positive or negative amount
+    async def mod_items(self, username: str, mod_amount: int):
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        for i in range(len(json_content)):
+            if  json_content[i]["username"] == username:
+                new_items=json_content[i]["items"] + mod_amount
+                json_content[i]["items"] = new_items
+
+
+        self.overwrite_json(json_content)
+
+        return username, new_items
+
