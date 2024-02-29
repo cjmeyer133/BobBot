@@ -178,8 +178,11 @@ class channel_db_handler:
         #determine the data to index
         data_to_search = json_content[db]
         
+        data_at_index=data_to_search[index]
+        data_list=list(data_at_index.values())
+
         #get the id from the given index and database
-        return data_to_search[index][0]
+        return data_list[0]
     
     def find_id_by_city_state(self, db, city, state_abbr):
         if(db != "existing" and db != "proposed"):
@@ -219,8 +222,14 @@ class channel_db_handler:
         #determine the data to index
         data_to_search = json_content[db]
         
+                
+        data_at_index=data_to_search[index]
+        data_list=list(data_at_index.values())
+
         #get the city from the given index and database
-        return data_to_search[index][1]
+        return data_list[1]
+
+        
     
     #retuns a state or region abbreviation
     def find_state_by_index(self, db, index):
@@ -234,9 +243,13 @@ class channel_db_handler:
 
         #determine the data to index
         data_to_search = json_content[db]
-        
+                
+        data_at_index=data_to_search[index]
+        data_list=list(data_at_index.values())
+
         #get the state from the given index and database
-        return data_to_search[index][2]
+        return data_list[2]
+
     
     
     def find_city_by_state(self, state_abbr):

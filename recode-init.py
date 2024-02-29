@@ -277,7 +277,8 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(reaction):
-    guild=discord.Object(id=1200191417457324069) 
+    the_guild=client.get_guild(1200191417457324069)
+    print(the_guild)
     emoji=str(reaction.emoji)
     postID=str(reaction.message_id)
     #check the #claim-roles channel's posts for numbers
@@ -293,27 +294,29 @@ async def on_raw_reaction_add(reaction):
                 await reaction.member.add_roles(role_use, reason="reaction", atomic=True)
                 member=reaction.member
                 print('Role added to '+str(member))
-                break
-    citylist=db_handler.find_city_by_state(i)
-    if citylist == []:
-        citymsg="Thanks! There are no city channels for "+state_name+" yet, but you can propose a city channel in the server using the command /suggest-channel."
-    if citylist != []:
-        citymsg="Thanks! Here are the city channels in "+state_name+": \n"
-        for c in citylist:
-            city_name=c.get("city")
-            city_channel=str(c.get("channel_ID"))
-            citymsg=citymsg+city_name+" can be found at https://discord.com/channels/1200191417457324069/"+city_channel+" .\n"
-    await member.send(citymsg)
+                
+                citylist=db_handler.find_city_by_state(i)
+                if citylist == []:
+                    citymsg="Thanks! There are no city channels for "+state_name+" yet, but you can propose a city channel in the server using the command /suggest-channel."
+                if citylist != []:
+                    citymsg="Thanks! Here are the city channels in "+state_name+": \n"
+                for c in citylist:
+                    city_name=c.get("city")
+                    city_channel=str(c.get("channel_ID"))
+                    citymsg=citymsg+city_name+" can be found at https://discord.com/channels/1200191417457324069/"+city_channel+" .\n"
+                await member.send(citymsg)
 
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
     proposalchannelID = 1202356899773685770
+    for_cat_channel=the_guild.get_channel(1200192781004582962)
+    channel_cat=for_cat_channel.category
     if reaction.channel_id == proposalchannelID:
         
         on_a_proposal_post = db_handler.find_entry_by_id("proposed", reaction.message_id)
-        if on_a_proposal_post != "error" and on_a_proposal_post != -1:
+        if on_a_proposal_post[0] != "error" and on_a_proposal_post[0] != -1:
             
-            id_of_proposal_post = db_handler.find_id_by_index("proposed", on_a_proposal_post)
+            id_of_proposal_post = db_handler.find_id_by_index("proposed", on_a_proposal_post[0])
             print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
             message = await client.get_channel(reaction.channel_id).fetch_message(reaction.message_id) #I think this line is weird
             
@@ -328,12 +331,13 @@ async def on_raw_reaction_add(reaction):
                 #make a new channel for the proposed city and change the database to reflect that
                 print("Make new channel here!")
                 #grab the city and state/region from the database
-                city = db_handler.find_city_by_index("proposed", id_of_proposal_post)
-                abbr = db_handler.find_state_by_index("proposed", id_of_proposal_post)
+
+                city = db_handler.find_city_by_index("proposed", on_a_proposal_post[0])
+                abbr = db_handler.find_state_by_index("proposed", on_a_proposal_post[0])
 
                 #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
                 newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")            
-                channel = await guild.create_text_channel(newChannelName, category=1200193321495187486)
+                channel = await the_guild.create_text_channel(newChannelName, category=channel_cat)
 
                 #update the database appropriately
                 db_handler.create_new_entry("existing", channel.id, city, abbr)
