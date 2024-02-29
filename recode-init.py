@@ -277,10 +277,11 @@ async def on_ready():
     #prints this when bot has connected to discord
     await the_tree.sync(guild=discord.Object(id=1200191417457324069))
     checkResult = await db_handler.check_json()
-    if(checkResult == "error"):
-        print("The file database/channel_database.json failed to open properly")
-    else:
+    if(checkResult == "good"):
         print("Yay, opened the file correctly!")    
+    else:
+        print("The file database/channel_database.json failed to open properly")
+
     print(f'{client.user} has connected to Discord!')
 
 
@@ -318,28 +319,34 @@ async def on_raw_reaction_add(reaction):
     #check the #city-proposal channel's posts for votes (the thumbs up)
     proposalchannelID = 1202356899773685770
     if reaction.channel_id == proposalchannelID:
+        
         on_a_proposal_post = db_handler.find_entry_by_id("proposed", reaction.message_id)
         if on_a_proposal_post != "error" and on_a_proposal_post != -1:
+            
             id_of_proposal_post = db_handler.find_id_by_index("proposed", on_a_proposal_post)
             print("here, we should \n1. check the number of thumbs up reactions on the post\n2. if that's more than 5, \n\t2a. make a channel for the city/state \n\t2b. remove this post from the proposed database and \n\t2c. add the new channel to the exisiting database")
             message = await client.get_channel(reaction.channel_id).fetch_message(reaction.message_id) #I think this line is weird
             
+            #check the number of votes the message has
             thumbs_up_count = 0
             for reaction in message.reactions:
                 if str(reaction.emoji) == voteEmoji:
                     thumbs_up_count = reaction.count
+
+            #if it has enough votes...
             if thumbs_up_count > 1:
+                #make a new channel for the proposed city and change the database to reflect that
                 print("Make new channel here!")
                 #grab the city and state/region from the database
                 city = db_handler.find_city_by_index("proposed", id_of_proposal_post)
                 abbr = db_handler.find_state_by_index("proposed", id_of_proposal_post)
 
                 #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
-                newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")
-                newChannelID = -1
+                newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")            
+                channel = await guild.create_text_channel(newChannelName, category=1200193321495187486)
 
-                #update the databases appropriately
-                db_handler.create_new_entry("existing", newChannelID, city, abbr)
+                #update the database appropriately
+                db_handler.create_new_entry("existing", channel.id, city, abbr)
                 db_handler.remove_entry("proposed", id_of_proposal_post)
 
     #check the city channels' threaded posts for thanks (the thumbs up)
