@@ -278,7 +278,6 @@ async def on_ready():
 @client.event
 async def on_raw_reaction_add(reaction):
     the_guild=client.get_guild(1200191417457324069)
-    print(the_guild)
     emoji=str(reaction.emoji)
     postID=str(reaction.message_id)
     #check the #claim-roles channel's posts for numbers
@@ -309,8 +308,9 @@ async def on_raw_reaction_add(reaction):
 
     #check the #city-proposal channel's posts for votes (the thumbs up)
     proposalchannelID = 1202356899773685770
-    for_cat_channel=the_guild.get_channel(1200192781004582962)
-    channel_cat=for_cat_channel.category
+    for_guild_var=the_guild.get_channel(1200192781004582962)
+    for_cat_channel=for_guild_var.category
+    cat_channel=for_cat_channel.category
     if reaction.channel_id == proposalchannelID:
         
         on_a_proposal_post = db_handler.find_entry_by_id("proposed", reaction.message_id)
@@ -337,7 +337,7 @@ async def on_raw_reaction_add(reaction):
 
                 #name should be "city-stateorregion" in all lowercase, with spaces replaced with hyphens
                 newChannelName = city.lower().replace(" ", "-")+"-"+abbr.lower().replace(" ", "-")            
-                channel = await the_guild.create_text_channel(newChannelName, category=channel_cat)
+                channel = await the_guild.create_text_channel(newChannelName, category=cat_channel)
 
                 #update the database appropriately
                 db_handler.create_new_entry("existing", channel.id, city, abbr)
