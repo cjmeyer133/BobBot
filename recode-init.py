@@ -255,7 +255,8 @@ dClient = discord.Client(intents=discord.Intents.default())
 #making it easier to call the tree to add functions
 the_tree = client.tree
 
-db_handler = database.__init__.channel_db_handler(bot)  # ("database.json")
+db_handler = database.__init__.channel_db_handler(bot)  # ("channel_database.json")
+reward_db_handler = database.__init__.reward_db_handler(bot) #("database/reward_database.json")
 ##########################
 # ASYNCHRONOUS FUNCTIONS #
 ###########################
@@ -396,15 +397,9 @@ async def on_raw_reaction_remove(reaction):
 async def first_command(interaction):
     await interaction.response.send_message("Hello!")
 
-@the_tree.command(
-    name="testing",
-    description="A test command with variables",
-    guild=discord.Object(id=1200191417457324069)
-)
-async def create_item(interaction, itemname: str, cost: int):
-    costs=str(cost)
-    #in theory, it should be written to the database here
-    await interaction.response.send_message(str(itemname+" costs $"+costs))
+
+
+
 
 #Bot command: /suggest-channel param:city param:stateOrRegionAbbr ->
 #If the state stateOrRegionAbbr is not one of the approved abbreviations, tell the user "Sorry, no state or region exists with the abbreviation [stateOrRegion]".
@@ -460,6 +455,8 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
 
+
+
 @the_tree.command(
     name = "find-adderall-here", 
     description="Start a new thread to find a pharmacy that can fulfill your prescription.", 
@@ -495,6 +492,57 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
     else:
         #if the command can't be used here, send an error message
         await interaction.response.send_message(content=f"You can't run this command in this channel! Try running it in a channel under the category \'{category}\'.", ephemeral=True)
+
+
+@the_tree.command(
+    name = "mod-money", 
+    description="Changes a user's coins by the provided amount. Amount can be positive or negative whole number.", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def mod_money(interaction, username: str, amount: int):
+
+    index=reward_db_handler.find_index_with_username(username)
+    if index==False:
+        reward_db_handler.create_new_entry(username, amount, 0)
+        await interaction.response.send_message(username+"\'s new coint amount is "+str(amount))
+    else:
+        coin_mod=reward_db_handler.mod_coins(username, amount)
+        await interaction.response.send_message(item_mod[0]+"\'s new coin amount is"+coin_mod[1])
+
+
+
+
+@the_tree.command(
+    name = "mod-items", 
+    description="Changes a user's item quantity by amount that can be positive or negative whole number.", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def mod_item_count(interaction, username: str, amount: int):
+
+    index=reward_db_handler.find_index_with_username(username)
+    if index==False:
+        reward_db_handler.create_new_entry(username, 0, amount)
+        await interaction.response.send_message(username+"\'s new item amount is "+str(amount))
+    else:
+        item_mod=reward_db_handler.mod_items(username, amount)
+        await interaction.response.send_message(item_mod[0]+"\'s new item amount is"+item_mod[1])
+
+
+@the_tree.command(
+    name = "currency-info", 
+    description="Pulls the coin and item count for a specified user", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def check_amount(interaction, username: str):
+
+    index=reward_db_handler.find_index_with_username(username)
+    if index==False:
+        reward_db_handler.create_new_entry(username, 0, 0)
+        await interaction.response.send_message(username+" has 0 coins and 0 items.")
+    else:
+        coin_amount=reward_db_handler.find_coins_with_index(index)
+        item_amount=reward_db_handler.find_items_with_index(index)
+        await interaction.response.send_message(username+" has "+coin_amount+" coins and "+item_amount+" items.")
 
 
 #function to add money to a user
