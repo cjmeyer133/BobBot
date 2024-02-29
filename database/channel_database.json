@@ -6,7 +6,7 @@
             "state_abbr": "MA"
         },
         {
-            "channel_ID": 1212598142927634473,
+            "channel_ID": 1212613041485651999,
             "city": "Toms River",
             "state_abbr": "NJ"
         }
@@ -16,16 +16,6 @@
             "post_ID": 1212435643674656799,
             "city": "Spring",
             "state_abbr": "TX"
-        },
-        {
-            "post_ID": 1212481403476910170,
-            "city": "Wor cester",
-            "state_abbr": "MA"
-        },
-        {
-            "post_ID": 1212577680143163493,
-            "city": "Toms River",
-            "state_abbr": "NJ"
         }
     ]
 }
