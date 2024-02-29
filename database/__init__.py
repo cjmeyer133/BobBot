@@ -494,6 +494,9 @@ class reward_db_handler():
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
+        if index > len(json_content):
+            return "index out of range"
+
         username=json_content[index]["username"]
 
         return username
@@ -523,9 +526,12 @@ class reward_db_handler():
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
+        if index > len(json_content):
+            return "index out of range"
+
         coins=json_content[index]["coins"]
 
-        return coins
+        return str(coins)
 
 
 
@@ -552,9 +558,12 @@ class reward_db_handler():
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
+        if index > len(json_content):
+            return "index out of range"
+
         items=json_content[index]["items"]
 
-        return items
+        return str(items)
 
 
 
@@ -567,7 +576,7 @@ class reward_db_handler():
         index_to_remove=reward_db_handler.find_index_with_username(username)
 
         if(index_to_remove == -1):
-            return "failure", f"failed to find the provided id {id} in the specified database {db}"
+            return "user entry not found"
 
         # delete entry
         json_content.pop(json_content[index_to_remove])
