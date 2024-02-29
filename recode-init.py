@@ -460,6 +460,32 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
         await interaction.response.send_message("Couldn't find the #city-proposal channel.")
     return
 
+@the_tree.command(
+    name = "find-adderall-here", 
+    description="Start a new thread to find a pharmacy that can fulfill your prescription.", 
+    guild=discord.Object(id=1200191417457324069)
+)
+async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
+    #if the channel this command was used in is within the FIND-BY-CITY category, it can be used
+    if interaction.channel.name == ("bot-test"):
+        #check to ensure the ir/er param is valid
+        ir = ["ir", "immediate release", "immediate"]
+        xr = ["xr", "extended release", "extended"]
+        if not (ir_or_xr.lower() in ir or ir_or_xr.lower() in xr):
+            await interaction.response.send_message(f"The parameter \'ir_or_xr\' takes the release time of your prescription, either immediate release (ir) or extended release (xr). \n\"{ir_or_xr}\" could not be understood as either of those. Please try again.\n\nHint: If your prescription does not have the letters XR in it, it may be IR. Check with your doctor if you are unsure.")
+        
+        #check to ensure dosage is probably correct...
+        if not (strength.lower()__contains__("mg") or strength.lower().__contains__("milligrams")):
+            await interaction.response.send_message(f"The parameter \'strength\' takes the strength of each capsule/tablet of Adderall in milligrams (mg) according to your prescription. \"{strength}\" was not understandable as a medicine strength. Try entering a number followed by \"mg\" or \"milligrams\".\nPlease try again.")
+
+        #post a threaded message in the same channel as the command was sent from for others to respond to
+        #"User @{username} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr}"
+        await interaction.response.send_message("pic")
+    else:
+        #if the command can't be used here, send an error message
+        await interaction.response.send_message("You can't run this command in this channel! Try running it in a channel under the category \'FIND-BY-CITY\'")
+
+
 #function to add money to a user
 # @the_tree.command(
 #     name='add-money',
