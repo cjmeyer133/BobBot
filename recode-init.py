@@ -160,16 +160,6 @@ validStatesRegionsAndRoles = {
 
 stateReactionRoleData = {
 #ABR : [roleID, :emoji_name:, postID]
-# "Florida" : "FL",
-# "Georgia" : "GA",
-# "Guam" : "GU",
-# "Hawaii" : "HI",
-# "Idaho" : "ID",
-# "Illinois": "IL",
-# "Indiana": "IN",
-# "Iowa" : "IA",
-# "Kansas": "KS",
-# "Kentucky": "KY",
 "AK" : ["1202725827436085278", "<:server1:1212191653767684096>", "1211798235652423710"], #1st 1 
 "AL" : ["1202725789037109290", "<:server0:1212191652215660554>", "1211798235652423710"], #1st 0 
 "AR" : ["1202725897405210775", "<:server4:1212191659836706837>", "1211798235652423710"], #1st 4 
