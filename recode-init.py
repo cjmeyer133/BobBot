@@ -501,15 +501,9 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
         print(interaction.user)
         user = interaction.user
         ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
-<<<<<<< Updated upstream
         threadParent = await interaction.channel.send(f"User {user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
         threadChannel = await threadParent.create_thread(name=f"{user.global_name.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
         await threadChannel.send(f"{interaction.user.mention}, don't forget to react with a <:ThumbsUpIcon:1209267015458627746> to another user who gives you the info to fulfill your request. Then, you can both earn points!")
-=======
-        threadParent = await interaction.channel.send(f"User {interaction.user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
-        await threadParent.create_thread(name=f"{username.lower()}-{strength.lower().replace(' ', '-')}-{ir_or_xr_stand.lower()}")
-
->>>>>>> Stashed changes
         await interaction.response.send_message(content = f"Thread successfully created! See it here: https://discord.com/channels/1200191417457324069/{interaction.channel.id}/{threadParent.id}", ephemeral = True)
     else:
         #if the command can't be used here, send an error message
