@@ -480,10 +480,13 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        found=False
    
         for i in range(len(json_content)):
             if  json_content[i]["username"] == username:
+                found=True
                 return i
+        return found
     
 
 
@@ -575,6 +578,8 @@ class reward_db_handler():
 
         index_to_remove=reward_db_handler.find_index_with_username(username)
 
+        if (index_to_remove == 0):
+            return "You can't get rid of BobBot! D:"
         if(index_to_remove == -1):
             return "user entry not found"
 
@@ -592,15 +597,14 @@ class reward_db_handler():
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
-        for i in range(len(json_content)):
-            if  json_content[i]["username"] == username:
-                new_coins=json_content[i]["coins"] + mod_amount
-                json_content[i]["coins"] = new_coins
+        user_index=reward_db_handler.find_index_with_username(username)
+        new_coins=json_content[user_index]["coins"] + mod_amount
+        json_content[user_index]["coins"] = new_coins
 
 
         self.overwrite_json(json_content)
 
-        return username, new_coins
+        return [username, str(new_coins)]
 
 
 #modify the number of itemss by a positive or negative amount
@@ -608,13 +612,11 @@ class reward_db_handler():
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
 
-        for i in range(len(json_content)):
-            if  json_content[i]["username"] == username:
-                new_items=json_content[i]["items"] + mod_amount
-                json_content[i]["items"] = new_items
-
+        user_index=reward_db_handler.find_index_with_username(username)
+        new_items=json_content[user_index]["items"] + mod_amount
+        json_content[user_index]["items"] = new_items
 
         self.overwrite_json(json_content)
 
-        return username, new_items
+        return [username, str(new_items)]
 
