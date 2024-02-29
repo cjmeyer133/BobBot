@@ -467,23 +467,29 @@ async def suggest_channel(interaction, city :str, state_or_region :str):
 )
 async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
     #if the channel this command was used in is within the FIND-BY-CITY category, it can be used
-    if interaction.channel.name == ("bot-test"):
+    category = "find-by-city"
+    if interaction.channel.category.name == category:
         #check to ensure the ir/er param is valid
         ir = ["ir", "immediate release", "immediate"]
         xr = ["xr", "extended release", "extended"]
         if not (ir_or_xr.lower() in ir or ir_or_xr.lower() in xr):
-            await interaction.response.send_message(f"The parameter \'ir_or_xr\' takes the release time of your prescription, either immediate release (ir) or extended release (xr). \n\"{ir_or_xr}\" could not be understood as either of those. Please try again.\n\nHint: If your prescription does not have the letters XR in it, it may be IR. Check with your doctor if you are unsure.")
-        
-        #check to ensure dosage is probably correct...
-        if not strength.lower().__contains__("mg") or not strength.lower().__contains__("milligrams"):
-            await interaction.response.send_message(f"The parameter \'strength\' takes the strength of each capsule/tablet of Adderall in milligrams (mg) according to your prescription. \"{strength}\" was not understandable as a medicine strength. Try entering a number followed by \"mg\" or \"milligrams\".\nPlease try again.")
+            await interaction.response.send_message(content = f"The parameter \'ir_or_xr\' takes the release time of your prescription, either immediate release (ir) or extended release (xr). \n\"{ir_or_xr}\" could not be understood as either of those. Please try again.\n\nHint: If your prescription does not have the letters XR in it, it may be IR. Check with your doctor if you are unsure.", ephemeral = True)
+            return 
 
+        #check to ensure dosage is probably correct...
+        if strength.lower().find("mg") == -1 and strength.lower().find("milligrams") == -1:
+            await interaction.response.send_message(content = f"The parameter \'strength\' takes the strength of each capsule/tablet of Adderall in milligrams (mg) according to your prescription. \"{strength}\" was not understandable as a medicine strength. Try entering a number followed by \"mg\" or \"milligrams\".\nPlease try again.", ephemeral = True)
+            return
+        
         #post a threaded message in the same channel as the command was sent from for others to respond to
-        #"User @{username} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr}"
-        await interaction.response.send_message("pic")
+        city = db_handler.find_entry_by_id("existing",interaction.channel.id)[1]
+        username = "username"
+        ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
+        threadParent = await interaction.response.send_message(f"User @{username} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
+        await threadParent.createThread(name=f"{username.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
     else:
         #if the command can't be used here, send an error message
-        await interaction.response.send_message("You can't run this command in this channel! Try running it in a channel under the category \'FIND-BY-CITY\'")
+        await interaction.response.send_message(content=f"You can't run this command in this channel! Try running it in a channel under the category \'{category}\'.", ephemeral=True)
 
 
 #function to add money to a user
