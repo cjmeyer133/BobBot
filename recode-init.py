@@ -382,9 +382,11 @@ async def on_raw_reaction_remove(reaction):
                 await the_member.remove_roles(role_use, reason="reaction", atomic=True)
                 print('Role removed') 
 
-
-
-
+@client.event
+async def on_member_join(member):
+    channel = client.get_channel(1200191417457324072)
+    embed=discord.Embed(title="Welcome!",description=f"Welcome to AdderalFinder, {member.mention}!\n\nTo get started, head to https://discord.com/channels/1200191417457324069/1202360433768677396 to claim roles for the U.S. state(s) and/or territory/territories you usually fulfill your prescription in. (Note: since Adderall is not legal in most countries outside the U.S., AdderalFinder caters to inhabitants of the U.S. states and territories.)")
+    await channel.send(embed=embed)
 
 
 #######################
