@@ -479,11 +479,16 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
             return
         
         #post a threaded message in the same channel as the command was sent from for others to respond to
-        city = db_handler.find_entry_by_id("existing",interaction.channel.id)[1]
-        username = "username"
+        id = db_handler.find_entry_by_id("existing",interaction.channel.id)[0]
+        city = db_handler.find_city_by_index("existing", id)
+        print(interaction.user)
+        username = interaction.user.global_name
+        userID = interaction.user.name
         ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
-        threadParent = await interaction.response.send_message(f"User @{username} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
-        await threadParent.createThread(name=f"{username.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
+        threadParent = await interaction.channel.send(f"User {interaction.user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
+        await threadParent.create_thread(name=f"{username.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
+
+        await interaction.response.send_message(content = f"Thread successfully created! See it here: https://discord.com/channels/1200191417457324069/{interaction.channel.id}/{threadParent.id}", ephemeral = True)
     else:
         #if the command can't be used here, send an error message
         await interaction.response.send_message(content=f"You can't run this command in this channel! Try running it in a channel under the category \'{category}\'.", ephemeral=True)
