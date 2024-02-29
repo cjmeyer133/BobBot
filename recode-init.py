@@ -475,7 +475,7 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
             await interaction.response.send_message(f"The parameter \'ir_or_xr\' takes the release time of your prescription, either immediate release (ir) or extended release (xr). \n\"{ir_or_xr}\" could not be understood as either of those. Please try again.\n\nHint: If your prescription does not have the letters XR in it, it may be IR. Check with your doctor if you are unsure.")
         
         #check to ensure dosage is probably correct...
-        if not (strength.lower()__contains__("mg") or strength.lower().__contains__("milligrams")):
+        if not strength.lower().__contains__("mg") or not strength.lower().__contains__("milligrams"):
             await interaction.response.send_message(f"The parameter \'strength\' takes the strength of each capsule/tablet of Adderall in milligrams (mg) according to your prescription. \"{strength}\" was not understandable as a medicine strength. Try entering a number followed by \"mg\" or \"milligrams\".\nPlease try again.")
 
         #post a threaded message in the same channel as the command was sent from for others to respond to
