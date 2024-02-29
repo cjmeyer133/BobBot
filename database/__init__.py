@@ -448,3 +448,21 @@ class reward_db_handler():
         self.clean_json = json.dumps(content, indent=4, separators=(",", ": "))
         self.json_db.write(self.clean_json)
         self.json_db.close()
+
+    async def create_new_entry(self, username, coins, items):
+        # load json
+        json_file = open(self.pathToJson, "r")
+        json_content = json.load(json_file)
+
+        for i in range(len(json_entries)):
+            if  json_content[i]["username"] == username:
+                return "error", "Entry for that channel ID already exists."
+            
+        json_content.append[{"username": username,
+                             "coins": coins,
+                             "items": items}]
+
+        # overwrite, end
+        self.overwrite_json(json_content)
+
+        return "success"
