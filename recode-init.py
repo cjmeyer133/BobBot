@@ -347,7 +347,13 @@ async def on_raw_reaction_add(reaction):
                 if do_not_add == False:
                     role=validStatesRegionsAndRoles.get(abbr)
                     user_role=the_guild.get_role(int(role))
-                    channel=await the_guild.create_text_channel(newChannelName, category=cat_channel)
+                    #get the state from the dict to use it in the channel description
+                    state = abbr
+                    for key, value in stateRegionNamesAndAbbrevs.items():
+                        if value == abbr:
+                            state = key
+                    print(f"abbr is {abbr} and state is {state}")
+                    channel=await the_guild.create_text_channel(newChannelName, category=cat_channel, topic=f"Find Adderall in {city}, {state}. To make a request, run this command:\n/find-adderall-here param:ir_or_xr param:strength")
                     await channel.set_permissions(the_guild.default_role, read_messages=False)
                     await channel.set_permissions(user_role, read_messages=True)
                     #update the database appropriately
@@ -466,6 +472,11 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
     #if the channel this command was used in is within the FIND-BY-CITY category, it can be used
     category = "find-by-city"
     if interaction.channel.category.name == category:
+        #check to ensure the command was NOT sent in a thread
+        if interaction.channel.type == "public_thread" or interaction.channel.type == "private_thread":
+            await interaction.response.send_message(content=f"You can't run this command in a thread! Try running it in the main part of the channel.", ephemeral=True)
+            return
+        
         #check to ensure the ir/er param is valid
         ir = ["ir", "immediate release", "immediate"]
         xr = ["xr", "extended release", "extended"]
@@ -480,14 +491,17 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
         
         #post a threaded message in the same channel as the command was sent from for others to respond to
         id = db_handler.find_entry_by_id("existing",interaction.channel.id)[0]
+        if id < 0 or id == "error":
+            print(f"ID should have been a number >= 0, but instead it was {id}")
+            await interaction.response.send_message(content = f"Sorry, something went wrong. Try running this command in another channel.", ephemeral = True)
+            return
         city = db_handler.find_city_by_index("existing", id)
         print(interaction.user)
-        username = interaction.user.global_name
-        userID = interaction.user.name
+        user = interaction.user
         ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
-        threadParent = await interaction.channel.send(f"User {interaction.user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
-        await threadParent.create_thread(name=f"{username.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
-
+        threadParent = await interaction.channel.send(f"User {user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
+        threadChannel = await threadParent.create_thread(name=f"{user.global_name.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
+        await threadChannel.send(f"{interaction.user.mention}, don't forget to react with a <:ThumbsUpIcon:1209267015458627746> to another user who gives you the info to fulfill your request. Then, you can both earn points!")
         await interaction.response.send_message(content = f"Thread successfully created! See it here: https://discord.com/channels/1200191417457324069/{interaction.channel.id}/{threadParent.id}", ephemeral = True)
     else:
         #if the command can't be used here, send an error message
