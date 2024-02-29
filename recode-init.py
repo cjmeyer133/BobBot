@@ -501,9 +501,15 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
         print(interaction.user)
         user = interaction.user
         ir_or_xr_stand = "IR" if (ir_or_xr.lower() in ir) else "XR"
+<<<<<<< Updated upstream
         threadParent = await interaction.channel.send(f"User {user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
         threadChannel = await threadParent.create_thread(name=f"{user.global_name.lower()}-{strength.lower().replace(" ", "-")}-{ir_or_xr_stand.lower()}")
         await threadChannel.send(f"{interaction.user.mention}, don't forget to react with a <:ThumbsUpIcon:1209267015458627746> to another user who gives you the info to fulfill your request. Then, you can both earn points!")
+=======
+        threadParent = await interaction.channel.send(f"User {interaction.user.mention} is looking for Adderall in {city}! If you can help, please reply in this thread.\nRequired Strength: {strength}\nIR or XR: {ir_or_xr_stand}")
+        await threadParent.create_thread(name=f"{username.lower()}-{strength.lower().replace(' ', '-')}-{ir_or_xr_stand.lower()}")
+
+>>>>>>> Stashed changes
         await interaction.response.send_message(content = f"Thread successfully created! See it here: https://discord.com/channels/1200191417457324069/{interaction.channel.id}/{threadParent.id}", ephemeral = True)
     else:
         #if the command can't be used here, send an error message
@@ -517,12 +523,12 @@ async def find_adderall_here(interaction, ir_or_xr:str, strength:str):
 )
 async def mod_money(interaction, username: str, amount: int):
 
-    index=reward_db_handler.find_index_with_username(username)
+    index= reward_db_handler.find_index_with_username(username)
     if index==False:
-        reward_db_handler.create_new_entry(username, amount, 0)
+        await reward_db_handler.create_new_entry(username, amount, 0)
         await interaction.response.send_message(username+"\'s new coint amount is "+str(amount))
     else:
-        coin_mod=reward_db_handler.mod_coins(username, amount)
+        coin_mod= reward_db_handler.mod_coins(username, amount)
         await interaction.response.send_message(coin_mod[0]+"\'s new coin amount is"+coin_mod[1])
 
 
@@ -537,7 +543,7 @@ async def mod_item_count(interaction, username: str, amount: int):
 
     index=reward_db_handler.find_index_with_username(username)
     if index==False:
-        reward_db_handler.create_new_entry(username, 0, amount)
+        await reward_db_handler.create_new_entry(username, 0, amount)
         await interaction.response.send_message(username+"\'s new item amount is "+str(amount))
     else:
         item_mod=reward_db_handler.mod_items(username, amount)
@@ -553,10 +559,10 @@ async def check_amount(interaction, username: str):
 
     index=reward_db_handler.find_index_with_username(username)
     if index==False:
-        reward_db_handler.create_new_entry(username, 0, 0)
+        await reward_db_handler.create_new_entry(username, 0, 0)
         await interaction.response.send_message(username+" has 0 coins and 0 items.")
     else:
-        coin_amount=reward_db_handler.find_coins_with_index(index)
+        coin_amount= reward_db_handler.find_coins_with_index(index)
         item_amount=reward_db_handler.find_items_with_index(index)
         await interaction.response.send_message(username+" has "+coin_amount+" coins and "+item_amount+" items.")
 

@@ -456,12 +456,13 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
-        for i in range(len(json_content)):
-            if  json_content[i]["username"] == username:
+        for i in range(len(json_data)):
+            if  json_data[i]["username"] == username:
                 return "error", "Entry for that channel ID already exists."
             
-        json_content.append[{"username": username,
+        json_content["users"].append[{"username": username,
                              "coins": coins,
                              "items": items}]
 
@@ -480,10 +481,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
         found=False
    
-        for i in range(len(json_content)):
-            if  json_content[i]["username"] == username:
+        for i in range(len(json_data)):
+            at_index=json_data[i]
+            if  at_index["username"] == username:
                 found=True
                 return i
         return found
@@ -496,11 +499,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
-        if index > len(json_content):
+        if index > len(json_data):
             return "index out of range"
 
-        username=json_content[index]["username"]
+        username=json_data[index]["username"]
 
         return username
    
@@ -512,11 +516,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
         index_list=[]
 
-        for i in range(len(json_content)):
-            if  json_content[i]["coins"] == coins:
+        for i in range(len(json_data)):
+            if  json_data[i]["coins"] == coins:
                 index_list.append(i)
         
         return index_list
@@ -528,11 +533,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
-        if index > len(json_content):
+        if index > len(json_data):
             return "index out of range"
 
-        coins=json_content[index]["coins"]
+        coins=json_data[index]["coins"]
 
         return str(coins)
 
@@ -544,11 +550,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
         index_list=[]
 
-        for i in range(len(json_content)):
-            if  json_content[i]["items"] == items:
+        for i in range(len(json_data)):
+            if  json_data[i]["items"] == items:
                 index_list.append(i)
         
         return index_list
@@ -560,11 +567,12 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
-        if index > len(json_content):
+        if index > len(json_data):
             return "index out of range"
 
-        items=json_content[index]["items"]
+        items=json_data[index]["items"]
 
         return str(items)
 
@@ -575,8 +583,9 @@ class reward_db_handler():
         # load json
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
-        index_to_remove=reward_db_handler.find_index_with_username(username)
+        index_to_remove=int(reward_db_handler.find_index_with_username(username))
 
         if (index_to_remove == 0):
             return "You can't get rid of BobBot! D:"
@@ -584,7 +593,7 @@ class reward_db_handler():
             return "user entry not found"
 
         # delete entry
-        json_content.pop(json_content[index_to_remove])
+        json_content["users"].pop(json_data[index_to_remove])
 
         self.overwrite_json(json_content)
 
@@ -596,10 +605,11 @@ class reward_db_handler():
     async def mod_coins(self, username: str, mod_amount: int):
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
         user_index=reward_db_handler.find_index_with_username(username)
-        new_coins=json_content[user_index]["coins"] + mod_amount
-        json_content[user_index]["coins"] = new_coins
+        new_coins=json_data[user_index]["coins"] + mod_amount
+        json_content["users"][user_index]["coins"] = new_coins
 
 
         self.overwrite_json(json_content)
@@ -611,10 +621,11 @@ class reward_db_handler():
     async def mod_items(self, username: str, mod_amount: int):
         json_file = open(self.pathToJson, "r")
         json_content = json.load(json_file)
+        json_data=json_content["users"]
 
         user_index=reward_db_handler.find_index_with_username(username)
-        new_items=json_content[user_index]["items"] + mod_amount
-        json_content[user_index]["items"] = new_items
+        new_items=json_data[user_index]["items"] + mod_amount
+        json_content["users"][user_index]["items"] = new_items
 
         self.overwrite_json(json_content)
 
